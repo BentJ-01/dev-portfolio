@@ -1,58 +1,27 @@
 ---
-// Scroll-progress indicator styled as a road-cycling stage profile.
-// A mountain-stage silhouette sits at the top of the viewport; a cyclist climbs
-// along it as you scroll and crests a summit (with a KOM polka-dot flag) at 100%.
+// Scroll-progress indicator: a clean cycling "track" pinned to the bottom of the
+// viewport. A slim accent bar fills left-to-right as you scroll, with a rider
+// riding the leading edge and a KOM polka-dot flag at the finish.
 
-// Stage profile ridge as [xFraction (0–1), y in viewBox units (0=top, 24=baseline)].
-// The route climbs toward a summit at the finish.
-const ridge: [number, number][] = [
-  [0.0, 19],
-  [0.1, 16],
-  [0.2, 18],
-  [0.3, 13],
-  [0.4, 15],
-  [0.52, 10],
-  [0.62, 13],
-  [0.72, 7],
-  [0.82, 10],
-  [0.92, 4],
-  [1.0, 3],
-];
-
-const W = 1000;
-const H = 24;
-const pts = ridge.map(([x, y]) => `${(x * W).toFixed(1)},${y}`);
-const areaD = `M0,${H} L ${pts.join(' L ')} L ${W},${H} Z`;
-const lineD = `M ${pts.join(' L ')}`;
-const ridgeJSON = JSON.stringify(ridge);
+const base = import.meta.env.BASE_URL;
+const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
 ---
 
-<div class="stage" id="stage" data-ridge={ridgeJSON} aria-hidden="true">
-  <svg class="stage__svg" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none">
-    <defs>
-      <linearGradient id="stage-grad" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="var(--accent)" />
-        <stop offset="1" stop-color="var(--accent-2)" />
-      </linearGradient>
-      <clipPath id="stage-clip">
-        <rect id="stage-clip-rect" x="0" y="0" width="0" height={H} />
-      </clipPath>
-    </defs>
+<div class="stage" id="stage" aria-hidden="true">
+  <div class="stage__track"></div>
+  <div class="stage__fill" id="stage-fill"></div>
 
-    <!-- unridden stage (muted) -->
-    <path d={areaD} class="stage__base" />
-    <!-- ridden portion (accent, revealed by scroll) -->
-    <path d={areaD} class="stage__fill" clip-path="url(#stage-clip)" />
-    <!-- ridge line -->
-    <path d={lineD} class="stage__line" />
-  </svg>
+  <!-- checkered finish line at the very end of the track -->
+  <div class="stage__finish"></div>
 
-  <!-- the rider, positioned along the ridge in JS -->
-  <span class="stage__rider" id="stage-rider"><span class="stage__bike">🚴</span></span>
+  <!-- the rider, riding the leading edge of the fill -->
+  <span class="stage__rider" id="stage-rider">
+    <img src={asset('images/ridleynoah.png')} alt="" width="28" height="28" />
+  </span>
 
-  <!-- KOM polka-dot flag + summit flourish at the finish -->
+  <!-- KOM polka-dot flag at the finish -->
   <div class="stage__summit" id="stage-summit">
-    <svg class="stage__flag" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+    <svg class="stage__flag" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
       <rect x="3" y="2" width="1.6" height="20" rx="0.8" fill="currentColor" />
       <rect x="4.6" y="2.5" width="15" height="10" rx="1.2" fill="#fff" stroke="#e11" stroke-width="0.6" />
       <circle cx="8" cy="5.5" r="1.1" fill="#e11" />
@@ -61,61 +30,69 @@ const ridgeJSON = JSON.stringify(ridge);
       <circle cx="10.2" cy="8.5" r="1.1" fill="#e11" />
       <circle cx="14.7" cy="8.5" r="1.1" fill="#e11" />
     </svg>
-    <span class="stage__summit-label">Summit reached</span>
   </div>
 </div>
 
 <style>
   .stage {
     position: fixed;
-    inset: 0 0 auto 0;
-    height: 24px;
+    inset: auto 0 0 0;
+    height: 3px;
     z-index: 130;
     pointer-events: none;
   }
-  .stage__svg {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-  .stage__base {
-    fill: color-mix(in srgb, var(--text) 12%, transparent);
+  .stage__track {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--text) 10%, transparent);
   }
   .stage__fill {
-    fill: url(#stage-grad);
-    opacity: 0.9;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 60%, transparent);
   }
-  .stage__line {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 1.2;
-    stroke-linejoin: round;
-    opacity: 0.5;
-    vector-effect: non-scaling-stroke;
+  /* Checkered finish line at the right edge of the bar. */
+  .stage__finish {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 14px;
+    height: 7px;
+    --sq: 3.5px;
+    background-color: #fff;
+    background-image:
+      linear-gradient(45deg, #111 25%, transparent 25%, transparent 75%, #111 75%),
+      linear-gradient(45deg, #111 25%, transparent 25%, transparent 75%, #111 75%);
+    background-size: calc(var(--sq) * 2) calc(var(--sq) * 2);
+    background-position: 0 0, var(--sq) var(--sq);
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--text) 20%, transparent);
   }
 
   .stage__rider {
     position: absolute;
     left: 0;
-    top: 0;
-    font-size: 15px;
-    line-height: 1;
-    transform: translate(-50%, -85%);
-    transition: left 0.12s linear, top 0.12s linear;
-    will-change: left, top;
-    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.4));
+    bottom: 2px;
+    line-height: 0;
+    transform: translateX(-50%);
+    transition: left 0.12s linear;
+    will-change: left;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
   }
-  .stage__bike {
-    display: inline-block;
+  .stage__rider img {
+    display: block;
+    width: 40px;
+    height: auto;
   }
 
   .stage__summit {
     position: absolute;
-    top: 0;
-    right: 2px;
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
+    right: 4px;
+    bottom: 4px;
     color: var(--accent);
     transform: scale(0);
     transform-origin: bottom right;
@@ -134,23 +111,6 @@ const ridgeJSON = JSON.stringify(ridge);
     60% { transform: scale(1.25) rotate(6deg); }
     100% { transform: scale(1) rotate(0); }
   }
-  .stage__summit-label {
-    font-family: var(--font-heading);
-    font-size: 0.66rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    padding: 0.12rem 0.4rem;
-    border-radius: 999px;
-    color: var(--accent-contrast);
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    white-space: nowrap;
-  }
-
-  @media (max-width: 560px) {
-    .stage__summit-label {
-      display: none;
-    }
-  }
 
   @media (prefers-reduced-motion: reduce) {
     .stage__rider {
@@ -167,31 +127,11 @@ const ridgeJSON = JSON.stringify(ridge);
 </style>
 
 <script>
-  const stage = document.getElementById('stage');
+  const fill = document.getElementById('stage-fill');
   const rider = document.getElementById('stage-rider');
   const summit = document.getElementById('stage-summit');
-  const clipRect = document.getElementById('stage-clip-rect');
-  const svg = stage?.querySelector<SVGSVGElement>('.stage__svg');
 
-  if (stage && rider && summit && clipRect && svg) {
-    const ridge: [number, number][] = JSON.parse(stage.dataset.ridge || '[]');
-    const VB_W = 1000;
-    const VB_H = 24;
-
-    // Interpolate the ridge's y (viewBox units) at a horizontal fraction 0–1.
-    const ridgeYAt = (frac: number): number => {
-      const f = Math.min(Math.max(frac, 0), 1);
-      for (let i = 0; i < ridge.length - 1; i++) {
-        const [x0, y0] = ridge[i];
-        const [x1, y1] = ridge[i + 1];
-        if (f >= x0 && f <= x1) {
-          const t = x1 === x0 ? 0 : (f - x0) / (x1 - x0);
-          return y0 + (y1 - y0) * t;
-        }
-      }
-      return ridge[ridge.length - 1][1];
-    };
-
+  if (fill && rider && summit) {
     let reached = false;
 
     const update = () => {
@@ -199,22 +139,14 @@ const ridgeJSON = JSON.stringify(ridge);
       const max = doc.scrollHeight - doc.clientHeight;
       const p = max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0;
 
-      const h = svg.clientHeight || VB_H;
-      const yVb = ridgeYAt(p);
-
+      fill.style.width = `${p * 100}%`;
       rider.style.left = `${p * 100}%`;
-      rider.style.top = `${(yVb / VB_H) * h}px`;
 
-      // Reveal the ridden portion.
-      clipRect.setAttribute('width', String(p * VB_W));
-
-      // Crest the summit near the very end.
-      const atSummit = p >= 0.985;
+      const atSummit = p >= 0.99;
       if (atSummit !== reached) {
         reached = atSummit;
         summit.classList.toggle('is-reached', reached);
-        if (reached) rider.style.opacity = '0';
-        else rider.style.opacity = '1';
+        rider.style.opacity = reached ? '0' : '1';
       }
     };
 

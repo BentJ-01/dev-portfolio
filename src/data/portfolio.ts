@@ -115,7 +115,7 @@ export const nav: NavLink[] = [
 export const about = {
   heading: 'About',
   paragraphs: [
-    'I’m a software developer with a full-stack foundation - comfortable across the frontend (Flutter, React/React Native, plain HTML/CSS/JS) and the backend (Java, SQL, Apex, Progress OpenEdge).',
+    'I’m a software developer who feels most at home on the frontend (Flutter, React/React Native, plain HTML/CSS/JS), backed by solid backend foundations I picked up during my studies (Java, SQL, Apex, Progress OpenEdge).',
     'Today I build and automate on Salesforce: Lightning Web Components, Apex, Visualforce and Flows, taking projects from analysis right through to deployment alongside a close-knit team and the clients we build for.',
     'I’m genuinely curious about AI - I hold the Salesforce Agentforce Specialist certification (building AI agents) and I lean on AI-assisted development to ship better, faster.',
     'I like the part of the job where a messy business problem turns into a clean, maintainable solution. Away from the keyboard you’ll usually find me out on the road bike, putting in the kilometres on the flat roads of the Kempen.',
@@ -209,27 +209,19 @@ export const projects: Project[] = [
   {
     title: 'NOKOUT Festival',
     description:
-      'A free community music festival in Vosselaar that I co-founded as one of four driving founders, born out of youth house De Nok. I own the festival’s full online presence - building and maintaining the website and running its social media.',
+      'A free community music festival in Vosselaar, run by a small team out of youth house De Nok and working toward its first edition. I help lead the organisation, and on the tech side I built the website from scratch in plain HTML, CSS and JavaScript and help out with its social media.',
     link: 'https://www.nokout.be',
     linkLabel: 'nokout.be',
-    tags: ['Web', 'Branding', 'Social media'],
+    tags: ['HTML', 'CSS', 'JavaScript', 'Social media'],
     featured: true,
   },
   {
     title: 'This portfolio',
     description:
       'The site you’re looking at - built with Astro and TypeScript, deployed to GitHub Pages with a CI/CD pipeline via GitHub Actions. Fast, accessible and built from clean, typed content.',
-    link: 'https://github.com/bentjacobs/dev-portfolio',
+    link: 'https://github.com/BentJ-01/dev-portfolio',
     linkLabel: 'View the repo',
     tags: ['Astro', 'TypeScript', 'GitHub Actions'],
-  },
-  {
-    title: 'Your project here',
-    description:
-      'Placeholder card - swap this out for your next project. Add a title, a short description, a link and a few tags in src/data/portfolio.ts.',
-    link: null,
-    tags: ['Coming soon'],
-    placeholder: true,
   },
 ];
 
@@ -281,14 +273,14 @@ export const contact = {
     {
       label: 'LinkedIn',
       value: 'linkedin.com/in/bent-jacobs',
-      href: 'https://www.linkedin.com/in/bent-jacobs',
+      href: 'https://www.linkedin.com/in/bent-jacobs-97b75126b/',
       icon: 'linkedin',
       external: true,
     },
     {
       label: 'GitHub',
-      value: 'github.com/bentjacobs',
-      href: 'https://github.com/bentjacobs',
+      value: 'github.com/BentJ-01',
+      href: 'https://github.com/BentJ-01',
       icon: 'github',
       external: true,
     },
