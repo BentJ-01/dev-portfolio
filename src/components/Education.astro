@@ -1,0 +1,83 @@
+---
+import { education } from '../data/portfolio';
+import SectionHeading from './SectionHeading.astro';
+---
+
+<section class="section section--tight" id="education" aria-labelledby="edu-title">
+  <div class="container">
+    <SectionHeading eyebrow="Background" title="Education" id="edu-title" />
+
+    <div class="edu">
+      {education.map((school, i) => (
+        <article class="edu__card" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+          <header class="edu__head">
+            <h3>{school.institution}</h3>
+            <span class="edu__loc">{school.location}</span>
+          </header>
+          <ul class="edu__programs">
+            {school.programs.map((p) => (
+              <li>
+                <span class="edu__prog">{p.title}</span>
+                <span class="edu__period">{p.period}</span>
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .edu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: var(--space-md);
+  }
+  .edu__card {
+    padding: var(--space-md);
+    border-radius: var(--radius);
+    border: var(--border-w) solid var(--border);
+    background: var(--bg-elev);
+    transition: border-color 0.25s var(--ease);
+  }
+  .edu__card:hover {
+    border-color: var(--border-strong);
+  }
+  .edu__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-bottom: var(--space-sm);
+    border-bottom: var(--border-w) solid var(--border);
+  }
+  .edu__head h3 {
+    font-size: var(--step-1);
+  }
+  .edu__loc {
+    color: var(--text-dim);
+    font-size: var(--step--1);
+  }
+  .edu__programs {
+    margin-top: var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .edu__programs li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .edu__prog {
+    color: var(--text);
+  }
+  .edu__period {
+    flex: none;
+    font-family: var(--font-heading);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+</style>

@@ -1,0 +1,70 @@
+---
+import Icon from './Icon.astro';
+---
+
+<button
+  id="theme-toggle"
+  class="theme-toggle"
+  type="button"
+  aria-label="Toggle colour theme"
+  title="Toggle colour theme"
+>
+  <span class="icon icon--sun"><Icon name="sun" size={18} /></span>
+  <span class="icon icon--moon"><Icon name="moon" size={18} /></span>
+</button>
+
+<style>
+  .theme-toggle {
+    display: inline-grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-sm);
+    border: var(--border-w) solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color 0.2s var(--ease), color 0.2s var(--ease),
+      background-color 0.2s var(--ease);
+  }
+  .theme-toggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .icon {
+    grid-area: 1 / 1;
+    display: inline-flex;
+    transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+  }
+  /* Show the icon for the theme you'd switch *to*. */
+  :global(html[data-theme='dark']) .icon--sun {
+    opacity: 1;
+    transform: none;
+  }
+  :global(html[data-theme='dark']) .icon--moon {
+    opacity: 0;
+    transform: rotate(-40deg) scale(0.6);
+  }
+  :global(html[data-theme='light']) .icon--moon {
+    opacity: 1;
+    transform: none;
+  }
+  :global(html[data-theme='light']) .icon--sun {
+    opacity: 0;
+    transform: rotate(40deg) scale(0.6);
+  }
+</style>
+
+<script>
+  const btn = document.getElementById('theme-toggle');
+  btn?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', next);
+    try {
+      localStorage.setItem('theme', next);
+    } catch (e) {
+      /* storage unavailable - ignore */
+    }
+  });
+</script>

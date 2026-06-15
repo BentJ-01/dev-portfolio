@@ -1,0 +1,77 @@
+---
+import { skills } from '../data/portfolio';
+import SectionHeading from './SectionHeading.astro';
+---
+
+<section class="section" id="skills" aria-labelledby="skills-title">
+  <div class="container">
+    <SectionHeading eyebrow="What I work with" title="Skills" id="skills-title" />
+
+    <div class="skills">
+      {skills.map((group, i) => (
+        <article class="skill-card" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+          <header>
+            <h3>{group.name}</h3>
+            <p>{group.blurb}</p>
+          </header>
+          <ul class="chips">
+            {group.items.map((item) => (
+              <li class="chip">{item}</li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: var(--space-md);
+  }
+  .skill-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    border-radius: var(--radius);
+    border: var(--border-w) solid var(--border);
+    background: var(--bg-elev);
+    transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
+  }
+  .skill-card:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-3px);
+  }
+  .skill-card h3 {
+    font-size: var(--step-1);
+  }
+  .skill-card header p {
+    margin-top: 0.4rem;
+    color: var(--text-muted);
+    font-size: var(--step--1);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: auto;
+  }
+  .chip {
+    font-family: var(--font-heading);
+    font-size: var(--step--1);
+    font-weight: 500;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    border: var(--border-w) solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    transition: border-color 0.2s var(--ease), color 0.2s var(--ease);
+  }
+  .chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+</style>

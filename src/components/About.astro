@@ -1,0 +1,40 @@
+---
+import { about } from '../data/portfolio';
+import SectionHeading from './SectionHeading.astro';
+import Icon from './Icon.astro';
+---
+
+<section class="section" id="about" aria-labelledby="about-title">
+  <div class="container about">
+    <SectionHeading eyebrow="Who I am" title={about.heading} id="about-title" />
+    <div class="about__body" data-reveal>
+      {about.paragraphs.map((p) => <p set:html={p} />)}
+      <p class="about__note">
+        <Icon name="bike" size={18} />
+        <span>Road cyclist - happiest with a long, flat road and a tailwind.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about__body {
+    max-width: 62ch;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    font-size: var(--step-1);
+    color: var(--text-muted);
+  }
+  .about__body :global(p:first-child) {
+    color: var(--text);
+  }
+  .about__note {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: var(--space-xs);
+    font-size: var(--step-0);
+    color: var(--accent);
+  }
+</style>

@@ -1,0 +1,90 @@
+---
+import '../styles/global.css';
+import { site } from '../data/portfolio';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = site.title, description = site.description } = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+// Helper to build base-aware asset URLs (avoids double slashes).
+const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
+const ogImageUrl = new URL(asset(site.ogImage), Astro.site ?? site.url).href;
+---
+
+<!doctype html>
+<html lang={site.locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.author} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={asset('favicon.svg')} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#0a0e1a" />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Fonts: preconnect + display=swap for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+    />
+
+    <!-- Set the theme before paint to avoid a flash of the wrong theme. -->
+    <script is:inline>
+      (function () {
+        try {
+          const stored = localStorage.getItem('theme');
+          const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+          const theme = stored || (prefersLight ? 'light' : 'dark');
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
+
+    <!-- JSON-LD: Person -->
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: site.author,
+        jobTitle: 'Software Developer',
+        email: 'mailto:bentjacobs01@gmail.com',
+        url: canonical,
+        address: { '@type': 'PostalAddress', addressLocality: 'Vosselaar', addressCountry: 'BE' },
+        knowsAbout: ['Salesforce', 'Apex', 'Lightning Web Components', 'Agentforce', 'Java', 'Flutter', 'React'],
+      })}
+    />
+  </head>
+  <body>
+    <!--
+      👀 Curious dev? There's a hidden gem in here.
+      Try the Konami code:  ↑ ↑ ↓ ↓ ← → ← → B A   (or click the 🚴 in the footer)
+    -->
+    <slot />
+  </body>
+</html>

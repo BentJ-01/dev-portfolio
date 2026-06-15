@@ -1,0 +1,184 @@
+---
+import { projects } from '../data/portfolio';
+import SectionHeading from './SectionHeading.astro';
+import Icon from './Icon.astro';
+---
+
+<section class="section" id="projects" aria-labelledby="projects-title">
+  <div class="container">
+    <SectionHeading eyebrow="Selected work" title="Projects" id="projects-title" />
+
+    <div class="projects">
+      {projects.map((project, i) => {
+        const isLink = Boolean(project.link);
+        const Tag = isLink ? 'a' : 'article';
+        return (
+          <Tag
+            class:list={[
+              'project',
+              { 'project--featured': project.featured, 'project--placeholder': project.placeholder },
+            ]}
+            data-reveal
+            style={`--reveal-delay: ${i * 80}ms`}
+            {...(isLink
+              ? { href: project.link, target: '_blank', rel: 'noopener noreferrer' }
+              : {})}
+          >
+            <div class="project__head">
+              <h3>{project.title}</h3>
+              {isLink && (
+                <span class="project__go" aria-hidden="true">
+                  <Icon name="arrow-up-right" size={18} />
+                </span>
+              )}
+            </div>
+
+            <p class="project__desc">{project.description}</p>
+
+            <div class="project__footer">
+              <ul class="project__tags">
+                {project.tags.map((tag) => (
+                  <li>{tag}</li>
+                ))}
+              </ul>
+              {project.link && project.linkLabel && (
+                <span class="project__link">{project.linkLabel}</span>
+              )}
+            </div>
+
+            {project.featured && <span class="project__badge">Featured</span>}
+          </Tag>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: var(--space-md);
+  }
+  .project {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: var(--space-md);
+    border-radius: var(--radius);
+    border: var(--border-w) solid var(--border);
+    background: var(--bg-elev);
+    overflow: hidden;
+    transition: border-color 0.25s var(--ease), transform 0.25s var(--ease),
+      box-shadow 0.25s var(--ease);
+  }
+  a.project:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+  }
+  .project--featured {
+    grid-column: span 2;
+    background:
+      radial-gradient(40rem 20rem at 100% 0%, var(--glow), transparent 60%),
+      var(--bg-elev);
+    border-color: var(--border-strong);
+  }
+  .project--placeholder {
+    border-style: dashed;
+    background: var(--surface);
+    color: var(--text-muted);
+  }
+  .project__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .project__head h3 {
+    font-size: var(--step-1);
+  }
+  .project--featured .project__head h3 {
+    font-size: var(--step-2);
+  }
+  .project__go {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: var(--radius-sm);
+    border: var(--border-w) solid var(--border);
+    color: var(--text-muted);
+    transition: transform 0.25s var(--ease), color 0.2s var(--ease),
+      border-color 0.2s var(--ease);
+  }
+  a.project:hover .project__go {
+    color: var(--accent);
+    border-color: var(--accent);
+    transform: translate(2px, -2px);
+  }
+  .project__desc {
+    color: var(--text-muted);
+    font-size: var(--step-0);
+  }
+  .project--featured .project__desc {
+    max-width: 52ch;
+  }
+  .project__footer {
+    margin-top: auto;
+    padding-top: var(--space-xs);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .project__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .project__tags li {
+    font-family: var(--font-heading);
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.28rem 0.6rem;
+    border-radius: 999px;
+    border: var(--border-w) solid var(--border);
+    color: var(--text-muted);
+  }
+  .project__link {
+    font-size: var(--step--1);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .project__badge {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    color: var(--accent-contrast);
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  }
+  /* Keep the badge from colliding with the featured heading / arrow. */
+  .project--featured .project__head {
+    padding-right: 5.5rem;
+  }
+  .project--featured .project__go {
+    display: none;
+  }
+
+  @media (max-width: 720px) {
+    .project--featured {
+      grid-column: span 1;
+    }
+  }
+</style>

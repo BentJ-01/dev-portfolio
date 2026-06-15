@@ -1,0 +1,214 @@
+---
+import { hero } from '../data/portfolio';
+import Icon from './Icon.astro';
+
+const base = import.meta.env.BASE_URL;
+const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
+---
+
+<section class="hero" id="top" aria-labelledby="hero-name">
+  <div class="container hero__grid">
+    <div class="hero__content">
+      <p class="eyebrow" data-reveal>
+        <Icon name="spark" size={16} /> Available for developer roles
+      </p>
+
+      <h1 id="hero-name" data-reveal style="--reveal-delay: 60ms">
+        {hero.name}
+      </h1>
+
+      <p class="hero__title" data-reveal style="--reveal-delay: 120ms">
+        <span class="gradient-text">{hero.title}</span>
+        <span class="hero__angles">{hero.subtitle}</span>
+      </p>
+
+      <p class="hero__tagline lead" data-reveal style="--reveal-delay: 180ms">
+        {hero.tagline}
+      </p>
+
+      <div class="hero__cta" data-reveal style="--reveal-delay: 240ms">
+        <a class="btn" href={hero.cta.projects.href}>
+          {hero.cta.projects.label}
+          <Icon name="arrow-down" size={16} />
+        </a>
+        <a class="btn btn--ghost" href={hero.cta.contact.href}>
+          {hero.cta.contact.label}
+        </a>
+        <a
+          class="btn btn--ghost"
+          href={asset(hero.cta.cv.href)}
+          download
+        >
+          <Icon name="download" size={16} />
+          {hero.cta.cv.label}
+        </a>
+      </div>
+    </div>
+
+    <div class="hero__media" data-reveal style="--reveal-delay: 200ms">
+      <!--
+        PHOTO PLACEHOLDER
+        TODO: Drop a portrait at  public/images/bent.jpg  (square-ish, ~800×800).
+        Once it exists the <img> below will display it automatically.
+      -->
+      <figure class="photo">
+        <img
+          src={asset(hero.photo)}
+          alt={hero.photoAlt}
+          width="440"
+          height="520"
+          loading="eager"
+          decoding="async"
+          onerror="this.closest('.photo').classList.add('photo--missing'); this.remove();"
+        />
+        <figcaption class="photo__placeholder" aria-hidden="true">
+          <Icon name="bike" size={34} />
+          <span>Add your photo</span>
+          <code>public/images/bent.jpg</code>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <a class="hero__scroll" href="#about" aria-label="Scroll to about">
+    <Icon name="arrow-down" size={18} />
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: min(92svh, 56rem);
+    display: flex;
+    align-items: center;
+    padding-block: var(--space-2xl) var(--space-xl);
+  }
+  .hero__grid {
+    display: grid;
+    grid-template-columns: 1.35fr 0.9fr;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+  h1 {
+    font-size: var(--step-4);
+    font-weight: 700;
+    margin-top: 0.6rem;
+  }
+  .hero__title {
+    margin-top: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-family: var(--font-heading);
+    font-size: var(--step-2);
+    font-weight: 600;
+  }
+  .hero__angles {
+    font-size: var(--step-1);
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .hero__tagline {
+    margin-top: var(--space-md);
+    max-width: 46ch;
+  }
+  .hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: var(--space-lg);
+  }
+
+  /* Photo */
+  .hero__media {
+    justify-self: center;
+  }
+  .photo {
+    position: relative;
+    width: clamp(15rem, 26vw, 22rem);
+    aspect-ratio: 11 / 13;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: var(--border-w) solid var(--border-strong);
+    background: linear-gradient(160deg, var(--bg-elev), var(--bg-elev-2));
+    box-shadow: var(--shadow);
+  }
+  .photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px var(--border);
+    pointer-events: none;
+  }
+  .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .photo__placeholder {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--text-dim);
+    text-align: center;
+    padding: 1rem;
+  }
+  .photo__placeholder code {
+    font-size: 0.78rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    background: var(--surface);
+    border: var(--border-w) solid var(--border);
+    color: var(--text-muted);
+  }
+  /* Shown only if the image fails to load (placeholder mode). */
+  .photo--missing .photo__placeholder {
+    display: flex;
+  }
+
+  .hero__scroll {
+    position: absolute;
+    left: 50%;
+    bottom: 1.5rem;
+    translate: -50% 0;
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    border: var(--border-w) solid var(--border);
+    color: var(--text-muted);
+    background: var(--surface);
+    animation: bob 2.4s var(--ease) infinite;
+  }
+  .hero__scroll:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+
+  @media (max-width: 860px) {
+    .hero__grid {
+      grid-template-columns: 1fr;
+      text-align: left;
+    }
+    .hero__media {
+      order: -1;
+      justify-self: start;
+    }
+    .photo {
+      width: clamp(12rem, 50vw, 16rem);
+    }
+    .hero__scroll {
+      display: none;
+    }
+  }
+</style>

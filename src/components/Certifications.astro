@@ -1,0 +1,84 @@
+---
+import { certifications } from '../data/portfolio';
+import SectionHeading from './SectionHeading.astro';
+import Icon from './Icon.astro';
+---
+
+<section class="section section--tight" id="certifications" aria-labelledby="cert-title">
+  <div class="container">
+    <SectionHeading eyebrow="Credentials" title="Certifications" id="cert-title" />
+
+    <div class="certs">
+      {certifications.map((cert, i) => (
+        <article class="cert" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+          <div class="cert__badge" aria-hidden="true">
+            <Icon name="spark" size={26} />
+          </div>
+          <div class="cert__body">
+            <span class="cert__tag">AI agent credential</span>
+            <h3>{cert.name}</h3>
+            <p class="cert__issuer">{cert.issuer}</p>
+            <p class="cert__note">{cert.note}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .certs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: var(--space-md);
+  }
+  .cert {
+    display: flex;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    border-radius: var(--radius);
+    border: var(--border-w) solid var(--border-strong);
+    background:
+      radial-gradient(24rem 12rem at 0% 0%, var(--glow), transparent 65%),
+      var(--bg-elev);
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  }
+  .cert:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+  }
+  .cert__badge {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 3.4rem;
+    height: 3.4rem;
+    border-radius: 14px;
+    color: var(--accent-contrast);
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow: 0 8px 20px -8px var(--glow);
+  }
+  .cert__tag {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.35rem;
+  }
+  .cert__body h3 {
+    font-size: var(--step-1);
+  }
+  .cert__issuer {
+    color: var(--text-dim);
+    font-size: var(--step--1);
+    margin-top: 0.1rem;
+  }
+  .cert__note {
+    margin-top: 0.6rem;
+    color: var(--text-muted);
+    font-size: var(--step-0);
+  }
+</style>

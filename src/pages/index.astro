@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Skills from '../components/Skills.astro';
+import Experience from '../components/Experience.astro';
+import Projects from '../components/Projects.astro';
+import Certifications from '../components/Certifications.astro';
+import Education from '../components/Education.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import EasterEgg from '../components/EasterEgg.astro';
+import ScrollProgress from '../components/ScrollProgress.astro';
+---
+
+<Layout>
+  <a class="skip-link" href="#about">Skip to content</a>
+
+  <ScrollProgress />
+  <Nav />
+
+  <main id="main">
+    <Hero />
+    <About />
+    <Skills />
+    <Experience />
+    <Projects />
+    <Certifications />
+    <Education />
+    <Contact />
+  </main>
+
+  <Footer />
+  <EasterEgg />
+</Layout>
+
+<script>
+  // Scroll-reveal: add .is-visible to [data-reveal] elements as they enter view.
+  const items = document.querySelectorAll<HTMLElement>('[data-reveal]');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    items.forEach((el) => el.classList.add('is-visible'));
+  } else {
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.08 }
+    );
+    items.forEach((el) => io.observe(el));
+  }
+</script>
