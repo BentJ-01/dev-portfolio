@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bentj-01.github.io/dev-portfolio/sitemap-index.xml

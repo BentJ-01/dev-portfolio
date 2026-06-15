@@ -1,0 +1,25 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  id?: string;
+}
+const { eyebrow, title, id } = Astro.props;
+---
+
+<header class="heading" data-reveal>
+  {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+  <h2 id={id}>{title}</h2>
+</header>
+
+<style>
+  .heading {
+    margin-bottom: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  h2 {
+    font-size: var(--step-3);
+  }
+</style>

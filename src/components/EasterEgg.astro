@@ -1,0 +1,409 @@
+---
+import Icon from './Icon.astro';
+---
+
+<!--
+  Easter egg: Konami code (↑ ↑ ↓ ↓ ← → ← → B A) - or the footer 🚴 - slides in a
+  playful Strava-style "activity card" where the activity is *this visit*.
+-->
+<div
+  class="strava"
+  id="egg-card"
+  role="dialog"
+  aria-label="Strava activity - Portfolio Recon"
+  aria-modal="false"
+  hidden
+>
+  <button class="strava__close" id="egg-close" type="button" aria-label="Dismiss activity card">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <path d="M6 6l12 12M18 6L6 18" />
+    </svg>
+  </button>
+
+  <header class="strava__head">
+    <span class="strava__avatar" aria-hidden="true">BJ</span>
+    <div class="strava__who">
+      <strong>Bent Jacobs</strong>
+      <span id="egg-when">Just now · Vosselaar, BE</span>
+    </div>
+    <span class="strava__brand" aria-hidden="true">
+      <Icon name="bike" size={16} /> Strava
+    </span>
+  </header>
+
+  <h3 class="strava__title">Portfolio Recon <span aria-hidden="true">🚴</span></h3>
+
+  <!-- map-line flourish: a stylised GPS route -->
+  <div class="strava__map" aria-hidden="true">
+    <svg viewBox="0 0 320 64" preserveAspectRatio="none" width="100%" height="64">
+      <path
+        class="strava__route"
+        d="M4 50 C 40 50, 48 18, 80 22 S 130 50, 160 40 S 210 8, 244 20 S 296 46, 316 30"
+        fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+      />
+      <circle class="strava__pin strava__pin--start" cx="4" cy="50" r="4" />
+      <circle class="strava__pin strava__pin--end" cx="316" cy="30" r="4" />
+    </svg>
+  </div>
+
+  <dl class="strava__stats">
+    <div class="strava__stat">
+      <dt>Distance</dt>
+      <dd><span id="egg-distance">0.00</span> <small>km</small></dd>
+    </div>
+    <div class="strava__stat">
+      <dt>Moving Time</dt>
+      <dd><span id="egg-time">0:00</span></dd>
+    </div>
+    <div class="strava__stat">
+      <dt>Elevation</dt>
+      <dd><span id="egg-elev">0</span> <small>sections</small></dd>
+    </div>
+  </dl>
+
+  <div class="strava__kom">
+    <span class="strava__crown" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+        <path d="M3 8l4 4 5-7 5 7 4-4-1.5 11h-15L3 8z" />
+        <rect x="4.5" y="19" width="15" height="2.4" rx="1" />
+      </svg>
+    </span>
+    <div class="strava__komtext">
+      <strong>KOM - Bent Jacobs</strong>
+      <span>Segment leader · uncontested</span>
+    </div>
+    <span class="strava__kudos" id="egg-kudos">🔥</span>
+  </div>
+</div>
+
+<style>
+  .strava {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.5rem;
+    z-index: 160;
+    width: min(22rem, calc(100vw - 2.5rem));
+    padding: 1.1rem 1.2rem 1.2rem;
+    border-radius: 18px;
+    border: var(--border-w) solid var(--border-strong);
+    background: var(--bg-elev-2);
+    box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.65), var(--shadow);
+    color: var(--text);
+    transform: translateY(140%) scale(0.98);
+    opacity: 0;
+    transition: transform 0.5s var(--ease), opacity 0.4s var(--ease);
+  }
+  .strava[hidden] {
+    display: none;
+  }
+  .strava.is-shown {
+    transform: none;
+    opacity: 1;
+  }
+
+  .strava__close {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    display: grid;
+    place-items: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    border: var(--border-w) solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+  }
+  .strava__close:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+
+  .strava__head {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding-right: 1.6rem;
+  }
+  .strava__avatar {
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    flex: none;
+    border-radius: 50%;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #fff;
+    background: linear-gradient(135deg, #fc4c02, #ff8a3d);
+  }
+  .strava__who {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    min-width: 0;
+  }
+  .strava__who strong {
+    font-family: var(--font-heading);
+    font-size: var(--step-0);
+  }
+  .strava__who span {
+    color: var(--text-dim);
+    font-size: 0.78rem;
+  }
+  .strava__brand {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #fc4c02;
+  }
+
+  .strava__title {
+    margin-top: 0.9rem;
+    font-size: var(--step-1);
+  }
+
+  .strava__map {
+    margin-top: 0.7rem;
+    border-radius: 12px;
+    padding: 0.4rem 0.2rem;
+    background:
+      linear-gradient(0deg, color-mix(in srgb, #fc4c02 6%, transparent), transparent),
+      var(--surface);
+    border: var(--border-w) solid var(--border);
+    color: #fc4c02;
+  }
+  .strava__route {
+    stroke-dasharray: 520;
+    stroke-dashoffset: 520;
+  }
+  .strava.is-shown .strava__route {
+    animation: draw 1.4s var(--ease) 0.2s forwards;
+  }
+  @keyframes draw {
+    to { stroke-dashoffset: 0; }
+  }
+  .strava__pin {
+    fill: #fc4c02;
+    opacity: 0;
+  }
+  .strava.is-shown .strava__pin--start {
+    animation: pop 0.3s var(--ease) 0.3s forwards;
+  }
+  .strava.is-shown .strava__pin--end {
+    animation: pop 0.3s var(--ease) 1.5s forwards;
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .strava__stats {
+    margin-top: 0.9rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: var(--border-w) solid var(--border);
+    border-bottom: var(--border-w) solid var(--border);
+  }
+  .strava__stat {
+    padding: 0.7rem 0.2rem;
+    text-align: left;
+  }
+  .strava__stat + .strava__stat {
+    border-left: var(--border-w) solid var(--border);
+    padding-left: 0.7rem;
+  }
+  .strava__stat dt {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+  }
+  .strava__stat dd {
+    margin-top: 0.2rem;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: var(--step-1);
+    line-height: 1.1;
+  }
+  .strava__stat dd small {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .strava__kom {
+    margin-top: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.6rem 0.7rem;
+    border-radius: 12px;
+    background: linear-gradient(120deg, color-mix(in srgb, #fc4c02 16%, transparent), var(--surface));
+    border: var(--border-w) solid color-mix(in srgb, #fc4c02 28%, var(--border));
+  }
+  .strava__crown {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    flex: none;
+    border-radius: 8px;
+    color: #fff;
+    background: linear-gradient(135deg, #fc4c02, #ff8a3d);
+  }
+  .strava__komtext {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+  }
+  .strava__komtext strong {
+    font-family: var(--font-heading);
+    font-size: var(--step-0);
+  }
+  .strava__komtext span {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+  }
+  .strava__kudos {
+    margin-left: auto;
+    font-size: 1.1rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .strava {
+      transition: opacity 0.2s linear;
+      transform: none;
+    }
+    .strava__route {
+      stroke-dashoffset: 0;
+    }
+    .strava__pin {
+      opacity: 1;
+    }
+    .strava.is-shown .strava__route,
+    .strava.is-shown .strava__pin--start,
+    .strava.is-shown .strava__pin--end {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const KONAMI = [
+    'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+    'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+    'b', 'a',
+  ];
+
+  const card = document.getElementById('egg-card');
+  const closeBtn = document.getElementById('egg-close');
+  const elDistance = document.getElementById('egg-distance');
+  const elTime = document.getElementById('egg-time');
+  const elElev = document.getElementById('egg-elev');
+  const elKudos = document.getElementById('egg-kudos');
+
+  // ── Live "activity" tracking (runs from page load) ───────────────────────
+  const startedAt = Date.now();
+
+  // Cumulative scroll distance (pixels), used as playful "distance".
+  let scrolledPx = 0;
+  let lastY = window.scrollY;
+  window.addEventListener(
+    'scroll',
+    () => {
+      const y = window.scrollY;
+      scrolledPx += Math.abs(y - lastY);
+      lastY = y;
+    },
+    { passive: true }
+  );
+
+  // Distinct sections viewed, used as playful "elevation".
+  const viewed = new Set<string>();
+  const sections = document.querySelectorAll('main section[id]');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting && e.target.id) viewed.add(e.target.id);
+        });
+      },
+      { threshold: 0.4 }
+    );
+    sections.forEach((s) => io.observe(s));
+  }
+
+  const fmtTime = (ms: number) => {
+    const total = Math.floor(ms / 1000);
+    const m = Math.floor(total / 60);
+    const s = total % 60;
+    return `${m}:${String(s).padStart(2, '0')}`;
+  };
+
+  const kudos = ['🔥', '💪', '🚀', '🏔️', '⚡'];
+
+  let hideTimer: number | undefined;
+
+  function trigger() {
+    if (!card) return;
+
+    // Snapshot the stats at trigger time.
+    // ~1px ≈ 1 "metre" → /1000 km, with a small floor so it never reads 0.00.
+    const km = Math.max(scrolledPx / 1000, 0.18);
+    if (elDistance) elDistance.textContent = km.toFixed(2);
+    if (elTime) elTime.textContent = fmtTime(Date.now() - startedAt);
+    if (elElev) elElev.textContent = String(Math.max(viewed.size, 1));
+    if (elKudos) elKudos.textContent = kudos[Math.floor(Math.random() * kudos.length)];
+
+    card.hidden = false;
+    // Next frame so the transition runs from the hidden state.
+    requestAnimationFrame(() => card.classList.add('is-shown'));
+
+    window.clearTimeout(hideTimer);
+    hideTimer = window.setTimeout(dismiss, 9000);
+  }
+
+  function dismiss() {
+    if (!card) return;
+    card.classList.remove('is-shown');
+    window.clearTimeout(hideTimer);
+    // Wait for the slide-out before hiding from the a11y tree.
+    window.setTimeout(() => {
+      if (!card.classList.contains('is-shown')) card.hidden = true;
+    }, 500);
+  }
+
+  closeBtn?.addEventListener('click', dismiss);
+
+  // ── Konami sequence detection ────────────────────────────────────────────
+  let idx = 0;
+  window.addEventListener('keydown', (e) => {
+    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (key === KONAMI[idx]) {
+      idx += 1;
+      if (idx === KONAMI.length) {
+        idx = 0;
+        trigger();
+      }
+    } else {
+      idx = key === KONAMI[0] ? 1 : 0;
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') dismiss();
+  });
+
+  // Footer bike icon triggers the same card.
+  document.getElementById('bike-trigger')?.addEventListener('click', trigger);
+</script>

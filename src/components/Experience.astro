@@ -1,0 +1,195 @@
+---
+import { experience, leadership, leadershipBlurb } from '../data/portfolio';
+import SectionHeading from './SectionHeading.astro';
+import Icon from './Icon.astro';
+---
+
+<section class="section" id="experience" aria-labelledby="experience-title">
+  <div class="container">
+    <SectionHeading eyebrow="Where I've been" title="Experience" id="experience-title" />
+
+    <ol class="timeline">
+      {experience.map((job, i) => (
+        <li class="timeline__item" data-reveal style={`--reveal-delay: ${i * 70}ms`}>
+          <div class="timeline__dot" aria-hidden="true"></div>
+          <div class="timeline__card">
+            <div class="timeline__top">
+              <h3>
+                {job.role}
+                <span class="timeline__at"> · {job.company}</span>
+              </h3>
+              <span class="timeline__period">{job.period}</span>
+            </div>
+            <p class="timeline__loc">{job.company} - {job.location}</p>
+            <ul class="timeline__points">
+              {job.highlights.map((h) => (
+                <li>
+                  <Icon name="check" size={16} />
+                  <span>{h}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <!-- Community & teamwork sub-block - supporting soft-skill evidence. -->
+    <aside class="leadership" data-reveal aria-labelledby="leadership-title">
+      <h3 id="leadership-title" class="leadership__title">
+        <Icon name="spark" size={18} /> Community &amp; teamwork
+      </h3>
+      <p class="leadership__blurb">{leadershipBlurb}</p>
+      <ul class="leadership__list">
+        {leadership.map((item) => (
+          <li>
+            <span class="leadership__role">{item.role}</span>
+            <span class="leadership__org">{item.org}, {item.location}</span>
+            <span class="leadership__period">{item.period}</span>
+            {item.note && <span class="leadership__note">{item.note}</span>}
+          </li>
+        ))}
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .timeline {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding-left: 1.75rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: linear-gradient(var(--accent), transparent);
+    opacity: 0.45;
+  }
+  .timeline__item {
+    position: relative;
+  }
+  .timeline__dot {
+    position: absolute;
+    left: -1.75rem;
+    top: 0.45rem;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent);
+  }
+  .timeline__card {
+    padding: var(--space-md);
+    border-radius: var(--radius);
+    border: var(--border-w) solid var(--border);
+    background: var(--bg-elev);
+    transition: border-color 0.25s var(--ease);
+  }
+  .timeline__card:hover {
+    border-color: var(--border-strong);
+  }
+  .timeline__top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .timeline__top h3 {
+    font-size: var(--step-1);
+  }
+  .timeline__at {
+    color: var(--accent);
+  }
+  .timeline__period {
+    font-family: var(--font-heading);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .timeline__loc {
+    margin-top: 0.2rem;
+    color: var(--text-dim);
+    font-size: var(--step--1);
+  }
+  .timeline__points {
+    margin-top: var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .timeline__points li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.6rem;
+    align-items: start;
+    color: var(--text-muted);
+    font-size: var(--step-0);
+  }
+  .timeline__points :global(svg) {
+    color: var(--accent);
+    margin-top: 0.28em;
+  }
+
+  .leadership {
+    margin-top: var(--space-lg);
+    padding: var(--space-md);
+    border-radius: var(--radius);
+    border: var(--border-w) dashed var(--border-strong);
+    background: var(--surface);
+  }
+  .leadership__title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--step-1);
+  }
+  .leadership__title :global(svg) {
+    color: var(--accent);
+  }
+  .leadership__blurb {
+    color: var(--text-muted);
+    font-size: var(--step--1);
+    margin-top: 0.4rem;
+  }
+  .leadership__list {
+    margin-top: var(--space-md);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--space-sm);
+  }
+  .leadership__list li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    background: var(--bg-elev);
+    border: var(--border-w) solid var(--border);
+  }
+  .leadership__role {
+    font-family: var(--font-heading);
+    font-weight: 600;
+  }
+  .leadership__org {
+    color: var(--text-muted);
+    font-size: var(--step--1);
+  }
+  .leadership__period {
+    color: var(--text-dim);
+    font-size: var(--step--1);
+  }
+  .leadership__note {
+    margin-top: 0.4rem;
+    color: var(--text-muted);
+    font-size: var(--step--1);
+  }
+</style>
