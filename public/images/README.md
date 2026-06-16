@@ -4,7 +4,6 @@ Drop these files here:
 
 - **`bent.jpg`** - your portrait for the hero section.
   - Recommended: square-ish (roughly 800×950), well-lit, optimised (< 200 KB).
-  - Until this file exists, the hero shows a styled "Add your photo" placeholder.
   - To change the path/filename, edit `hero.photo` in `src/data/portfolio.ts`.
 
 - **`og-image.svg`** - social share / Open Graph image (already provided as a placeholder).

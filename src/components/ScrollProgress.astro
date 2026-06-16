@@ -81,7 +81,8 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
     transform: translateX(-50%);
     transition: left 0.12s linear;
     will-change: left;
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+    opacity: 1;
+    filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.65));
   }
   .stage__rider img {
     display: block;

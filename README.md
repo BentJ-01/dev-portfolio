@@ -44,7 +44,7 @@ data there and it flows through every component - no need to touch the markup.
 
 | Asset | Where it goes | Notes |
 | ----- | ------------- | ----- |
-| Portrait | `public/images/bent.jpg` | Square-ish (~800×950). Until it exists, the hero shows a styled placeholder. |
+| Portrait | `public/images/bent.jpg` | Square-ish (~800×950). Shown in the hero section. |
 | CV | `public/cv/Bent-Jacobs-CV.pdf` | Linked from the hero "Download CV" button. |
 | OG image | `public/images/og-image.svg` | A placeholder is provided; swap it if you like. |
 
