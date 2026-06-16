@@ -95,7 +95,7 @@ export const hero = {
     contact: { label: 'Get in touch', href: '#contact' },
     cv: { label: 'Download CV', href: 'cv/Bent-Jacobs-CV.pdf' },
   },
-  // Photo placeholder - drop a square-ish portrait here to replace the placeholder.
+  // Square-ish portrait shown in the hero. Swap the file at this path to update it.
   photo: 'images/bent.jpg',
   photoAlt: 'Portrait of Bent Jacobs',
 };
@@ -156,10 +156,11 @@ export const experience: ExperienceItem[] = [
     location: 'Turnhout',
     period: 'Apr 2025 – present',
     highlights: [
-      'Part of a small, close-knit team delivering tailored Salesforce solutions, involved end-to-end from analysis to deployment.',
-      'Build with Lightning Web Components, Apex and Visualforce, and automate processes with Flows.',
+      'Gather requirements directly from clients and translate them into Salesforce solutions, deciding together with the team which tools fit best - Apex, LWC, Flows, Visualforce and more.',
+      'Build those solutions end-to-end, from analysis through implementation to deployment.',
       'Write custom Apex - invocable methods and triggers - for complex and performance-sensitive cases.',
-      'Strong client-facing role: gathering requirements, advising on best practices and supporting user adoption.',
+      'Integrate Salesforce with external systems such as Odoo and Business Central over REST APIs, and orchestrate flows between platforms with n8n.',
+      'Work in a small, close-knit team with strong, direct client contact throughout each project.',
     ],
   },
   {
@@ -168,8 +169,9 @@ export const experience: ExperienceItem[] = [
     location: 'Wilrijk',
     period: 'Jun 2024 – Apr 2025',
     highlights: [
-      'Built tailored software for clients in the recycling industry, from design through implementation to maintenance.',
-      'Focused on reliability and customer-oriented development, keeping solutions practical and robust.',
+      'Worked on a custom, in-house ERP system built in Progress OpenEdge that served as the base platform for multiple clients, each with their own customisations on top.',
+      'Maintained and extended the shared platform, handling tickets and feature work across the client base.',
+      'Built bespoke modules and per-client adjustments on top of the base system as a junior contributor.',
     ],
   },
   {

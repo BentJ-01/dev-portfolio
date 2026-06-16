@@ -54,13 +54,7 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
           height="520"
           loading="eager"
           decoding="async"
-          onerror="this.closest('.photo').classList.add('photo--missing'); this.remove();"
         />
-        <figcaption class="photo__placeholder" aria-hidden="true">
-          <Icon name="bike" size={34} />
-          <span>Add your photo</span>
-          <code>public/images/bent.jpg</code>
-        </figcaption>
       </figure>
     </div>
   </div>
@@ -140,30 +134,6 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-  .photo__placeholder {
-    position: absolute;
-    inset: 0;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    color: var(--text-dim);
-    text-align: center;
-    padding: 1rem;
-  }
-  .photo__placeholder code {
-    font-size: 0.78rem;
-    padding: 0.2rem 0.5rem;
-    border-radius: 6px;
-    background: var(--surface);
-    border: var(--border-w) solid var(--border);
-    color: var(--text-muted);
-  }
-  /* Shown only if the image fails to load (placeholder mode). */
-  .photo--missing .photo__placeholder {
-    display: flex;
   }
 
   .hero__scroll {
