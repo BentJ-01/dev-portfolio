@@ -7,6 +7,11 @@ import SectionHeading from './SectionHeading.astro';
   <div class="container">
     <SectionHeading eyebrow="What I work with" title="Skills" id="skills-title" />
 
+    <p class="skills-note">
+      These reflect my current working proficiency, but I’ve consistently picked up new tools on
+      the job and enjoy doing so.
+    </p>
+
     <div class="skills">
       {skills.map((group, i) => (
         <article class="skill-card" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
@@ -14,9 +19,24 @@ import SectionHeading from './SectionHeading.astro';
             <h3>{group.name}</h3>
             <p>{group.blurb}</p>
           </header>
-          <ul class="chips">
+          <ul class="meters">
             {group.items.map((item) => (
-              <li class="chip">{item}</li>
+              <li class="meter">
+                <div class="meter__label">
+                  <span class="meter__name">{item.name}</span>
+                  <span class="meter__value">{item.level}</span>
+                </div>
+                <div
+                  class="meter__track"
+                  role="meter"
+                  aria-valuenow={item.level}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-label={`${item.name} proficiency`}
+                >
+                  <span class="meter__fill" style={`--level: ${item.level}%`}></span>
+                </div>
+              </li>
             ))}
           </ul>
         </article>
@@ -26,6 +46,13 @@ import SectionHeading from './SectionHeading.astro';
 </section>
 
 <style>
+  .skills-note {
+    margin-bottom: var(--space-md);
+    max-width: 48ch;
+    font-size: var(--step--1);
+    font-style: italic;
+    color: var(--text-dim);
+  }
   .skills {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
@@ -53,25 +80,58 @@ import SectionHeading from './SectionHeading.astro';
     color: var(--text-muted);
     font-size: var(--step--1);
   }
-  .chips {
+  .meters {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    flex-direction: column;
+    gap: 0.85rem;
     margin-top: auto;
   }
-  .chip {
+  .meter__label {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+  }
+  .meter__name {
     font-family: var(--font-heading);
     font-size: var(--step--1);
     font-weight: 500;
-    padding: 0.4rem 0.75rem;
-    border-radius: 999px;
-    border: var(--border-w) solid var(--border);
-    background: var(--surface);
     color: var(--text);
-    transition: border-color 0.2s var(--ease), color 0.2s var(--ease);
   }
-  .chip:hover {
-    border-color: var(--accent);
-    color: var(--accent);
+  .meter__value {
+    font-family: var(--font-heading);
+    font-size: var(--step--1);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-muted);
+  }
+  .meter__track {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--surface);
+    border: var(--border-w) solid var(--border);
+    overflow: hidden;
+  }
+  .meter__fill {
+    display: block;
+    height: 100%;
+    width: var(--level);
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    /* Animate via scaleX so the fill grows in when the card reveals. */
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.9s var(--ease);
+    transition-delay: calc(var(--reveal-delay, 0ms) + 120ms);
+  }
+  .skill-card.is-visible .meter__fill {
+    transform: scaleX(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .meter__fill {
+      transform: scaleX(1);
+    }
   }
 </style>
