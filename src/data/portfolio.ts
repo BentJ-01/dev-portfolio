@@ -8,13 +8,20 @@ export interface NavLink {
   href: string;
 }
 
+export interface Skill {
+  /** Skill / technology name. */
+  name: string;
+  /** Self-rated proficiency, 0–100. Drives the indicator bar. */
+  level: number;
+}
+
 export interface SkillGroup {
   /** Display name of the group (e.g. "Salesforce"). */
   name: string;
   /** Short note on why this group matters / who it speaks to. */
   blurb: string;
-  /** Individual skills/technologies. */
-  items: string[];
+  /** Individual skills/technologies, sorted strongest first. */
+  items: Skill[];
 }
 
 export interface ExperienceItem {
@@ -116,7 +123,7 @@ export const about = {
   heading: 'About',
   paragraphs: [
     'I’m a software developer who feels most at home on the frontend (Flutter, React/React Native, plain HTML/CSS/JS), backed by solid backend foundations I picked up during my studies (Java, SQL, Apex, Progress OpenEdge).',
-    'Today I build and automate on Salesforce: Lightning Web Components, Apex, Visualforce and Flows, taking projects from analysis right through to deployment alongside a close-knit team and the clients we build for.',
+    'Today I build and automate on Salesforce: Lightning Web Components, Apex, Visualforce and Flows, taking projects from analysis right through to deployment alongside a close-knit team and the clients we build for. I enjoy picking up new tools and frameworks, if there’s solid documentation, I’ll figure it out.',
     'I’m genuinely curious about AI - I hold the Salesforce Agentforce Specialist certification (building AI agents) and I lean on AI-assisted development to ship better, faster.',
     'I like the part of the job where a messy business problem turns into a clean, maintainable solution. Away from the keyboard you’ll usually find me out on the road bike, putting in the kilometres on the flat roads of the Kempen.',
   ],
@@ -128,22 +135,47 @@ export const skills: SkillGroup[] = [
   {
     name: 'Salesforce',
     blurb: 'My day-to-day platform - from declarative automation to custom Apex.',
-    items: ['Apex', 'LWC', 'Visualforce', 'Flows', 'Agentforce'],
-  },
-  {
-    name: 'Backend',
-    blurb: 'Solid fundamentals for data-heavy, reliable systems.',
-    items: ['Java', 'SQL', 'Apex', 'Progress OpenEdge'],
+    items: [
+      { name: 'Flows', level: 87 },
+      { name: 'Salesforce CLI / SFDX', level: 74 },
+      { name: 'SOQL', level: 71 },
+      { name: 'LWC', level: 68 },
+      { name: 'Apex', level: 55 },
+      { name: 'Visualforce', level: 53 },
+      { name: 'Agentforce', level: 47 },
+    ],
   },
   {
     name: 'Frontend & Mobile',
     blurb: 'Building interfaces and apps people actually enjoy using.',
-    items: ['Flutter / Dart', 'React / React Native', 'HTML', 'CSS', 'JavaScript'],
+    items: [
+      { name: 'JavaScript', level: 83 },
+      { name: 'HTML', level: 78 },
+      { name: 'CSS', level: 76 },
+      { name: 'Flutter / Dart', level: 59 },
+      { name: 'Astro', level: 58 },
+      { name: 'TypeScript', level: 52 },
+      { name: 'React / React Native', level: 43 },
+    ],
+  },
+  {
+    name: 'Backend & Languages',
+    blurb: 'Solid fundamentals for data-heavy, reliable systems.',
+    items: [
+      { name: 'REST APIs', level: 62 },
+      { name: 'Python', level: 44 },
+      { name: 'SQL', level: 42 },
+      { name: 'Progress OpenEdge', level: 31 },
+    ],
   },
   {
     name: 'Tools & DevOps',
-    blurb: 'Version control and delivery pipelines for shipping with confidence.',
-    items: ['Git', 'Azure DevOps'],
+    blurb: 'Version control, delivery pipelines and automation for shipping with confidence.',
+    items: [
+      { name: 'GitHub', level: 66 },
+      { name: 'Azure DevOps', level: 64 },
+      { name: 'n8n', level: 46 },
+    ],
   },
 ];
 
@@ -156,7 +188,7 @@ export const experience: ExperienceItem[] = [
     location: 'Turnhout',
     period: 'Apr 2025 – present',
     highlights: [
-      'Gather requirements directly from clients and translate them into Salesforce solutions, deciding together with the team which tools fit best - Apex, LWC, Flows, Visualforce and more.',
+      'Gather requirements directly from clients and translate them into Salesforce solutions, deciding together with the team which tools fit best - Apex, LWC, Flows, Visualforce, ...',
       'Build those solutions end-to-end, from analysis through implementation to deployment.',
       'Write custom Apex - invocable methods and triggers - for complex and performance-sensitive cases.',
       'Integrate Salesforce with external systems such as Odoo and Business Central over REST APIs, and orchestrate flows between platforms with n8n.',
