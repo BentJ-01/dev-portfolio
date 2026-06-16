@@ -1,6 +1,14 @@
 ---
 import { skills } from '../data/portfolio';
 import SectionHeading from './SectionHeading.astro';
+
+// Fill colour per group — keeps each card visually distinct.
+const groupColors: Record<string, string> = {
+  Salesforce: '#1D9E75',
+  'Frontend & Mobile': '#378ADD',
+  'Backend & Languages': '#7F77DD',
+  'Tools & DevOps': '#BA7517',
+};
 ---
 
 <section class="section" id="skills" aria-labelledby="skills-title">
@@ -14,7 +22,11 @@ import SectionHeading from './SectionHeading.astro';
 
     <div class="skills">
       {skills.map((group, i) => (
-        <article class="skill-card" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+        <article
+          class="skill-card"
+          data-reveal
+          style={`--reveal-delay: ${i * 80}ms; --bar: ${groupColors[group.name] ?? 'var(--accent)'}`}
+        >
           <header>
             <h3>{group.name}</h3>
             <p>{group.blurb}</p>
@@ -22,10 +34,7 @@ import SectionHeading from './SectionHeading.astro';
           <ul class="meters">
             {group.items.map((item) => (
               <li class="meter">
-                <div class="meter__label">
-                  <span class="meter__name">{item.name}</span>
-                  <span class="meter__value">{item.level}</span>
-                </div>
+                <span class="meter__name">{item.name}</span>
                 <div
                   class="meter__track"
                   role="meter"
@@ -86,31 +95,23 @@ import SectionHeading from './SectionHeading.astro';
     gap: 0.85rem;
     margin-top: auto;
   }
-  .meter__label {
+  .meter {
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.5rem;
-    margin-bottom: 0.4rem;
+    align-items: center;
+    gap: var(--space-md);
   }
   .meter__name {
+    flex: 0 0 42%;
     font-family: var(--font-heading);
     font-size: var(--step--1);
     font-weight: 500;
     color: var(--text);
   }
-  .meter__value {
-    font-family: var(--font-heading);
-    font-size: var(--step--1);
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    color: var(--text-muted);
-  }
   .meter__track {
-    height: 6px;
-    border-radius: 999px;
-    background: var(--surface);
-    border: var(--border-w) solid var(--border);
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--bar) 14%, transparent);
     overflow: hidden;
   }
   .meter__fill {
@@ -118,7 +119,7 @@ import SectionHeading from './SectionHeading.astro';
     height: 100%;
     width: var(--level);
     border-radius: inherit;
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    background: var(--bar);
     /* Animate via scaleX so the fill grows in when the card reveals. */
     transform: scaleX(0);
     transform-origin: left;

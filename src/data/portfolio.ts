@@ -53,6 +53,10 @@ export interface Project {
   placeholder?: boolean;
   /** Highlights a flagship project for extra visual weight. */
   featured?: boolean;
+  /** Renders a phone-mockup screenshot slot inside the card. */
+  mockup?: boolean;
+  /** Screenshot paths shown in the mockup. Empty/undefined shows the "coming soon" placeholder. */
+  screenshots?: string[];
 }
 
 export interface Certification {
@@ -256,6 +260,23 @@ export const projects: Project[] = [
     link: 'https://github.com/BentJ-01/dev-portfolio',
     linkLabel: 'View the repo',
     tags: ['Astro', 'TypeScript', 'GitHub Actions'],
+  },
+  {
+    title: 'Tuinarchitectuur Woest',
+    description:
+      'A clean and simple one-page website for a friend working as a landscape architect - built to his brief and focused on getting him found online. Handled the full build and took care of the SEO so he ranks better in local search results.',
+    link: 'https://www.tuinarchitectuurwoest.com',
+    linkLabel: 'Visit site',
+    tags: ['HTML', 'CSS', 'JavaScript', 'SEO'],
+  },
+  {
+    title: 'Segment Hunter',
+    description:
+      'A personal Flutter app that tracks Strava segment PRs and flags which ones are close to being beaten - essentially rebuilding a Strava Premium feature for free. Built for personal use, shared with a few friends who ride as well.',
+    link: 'https://github.com/BentJ-01/segment-hunter',
+    linkLabel: 'View repo',
+    tags: ['Flutter', 'Dart', 'Supabase', 'Strava API'],
+    mockup: true,
   },
 ];
 
