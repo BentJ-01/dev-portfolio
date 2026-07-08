@@ -176,11 +176,9 @@ import Icon from './Icon.astro';
     margin-top: 0.7rem;
     border-radius: 12px;
     padding: 0.4rem 0.2rem;
-    background:
-      linear-gradient(0deg, color-mix(in srgb, #fc4c02 6%, transparent), transparent),
-      var(--surface);
+    background: color-mix(in srgb, var(--accent) 7%, transparent);
     border: var(--border-w) solid var(--border);
-    color: #fc4c02;
+    color: var(--accent);
   }
   .strava__route {
     stroke-dasharray: 520;
@@ -193,7 +191,7 @@ import Icon from './Icon.astro';
     to { stroke-dashoffset: 0; }
   }
   .strava__pin {
-    fill: #fc4c02;
+    fill: var(--accent);
     opacity: 0;
   }
   .strava.is-shown .strava__pin--start {
@@ -241,6 +239,7 @@ import Icon from './Icon.astro';
     color: var(--text-muted);
   }
 
+  /* Achievement moment → action color, matching the Contact CTA. */
   .strava__kom {
     margin-top: 0.9rem;
     display: flex;
@@ -248,8 +247,8 @@ import Icon from './Icon.astro';
     gap: 0.65rem;
     padding: 0.6rem 0.7rem;
     border-radius: 12px;
-    background: linear-gradient(120deg, color-mix(in srgb, #fc4c02 16%, transparent), var(--surface));
-    border: var(--border-w) solid color-mix(in srgb, #fc4c02 28%, var(--border));
+    background: color-mix(in srgb, var(--accent-2) 12%, transparent);
+    border: var(--border-w) solid color-mix(in srgb, var(--accent-2) 32%, var(--border));
   }
   .strava__crown {
     display: grid;
@@ -258,8 +257,8 @@ import Icon from './Icon.astro';
     height: 2rem;
     flex: none;
     border-radius: 8px;
-    color: #fff;
-    background: linear-gradient(135deg, #fc4c02, #ff8a3d);
+    color: var(--accent-contrast);
+    background: var(--accent-2);
   }
   .strava__komtext {
     display: flex;
