@@ -1,0 +1,59 @@
+---
+// Circular back-to-top button pinned to the bottom-right of the viewport.
+// Hidden until the visitor has scrolled past most of the first screen.
+import Icon from './Icon.astro';
+---
+
+<button type="button" class="to-top" id="to-top" aria-label="Back to top">
+  <Icon name="arrow-up" size={18} />
+</button>
+
+<style>
+  .to-top {
+    position: fixed;
+    right: 1.1rem;
+    bottom: 1.4rem;
+    z-index: 120;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border-radius: 50%;
+    border: var(--border-w) solid var(--border-strong);
+    background: var(--bg-elev);
+    color: var(--text-muted);
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease),
+      color 0.2s var(--ease), border-color 0.2s var(--ease);
+  }
+  .to-top.is-visible {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .to-top:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+</style>
+
+<script>
+  const btn = document.getElementById('to-top');
+  if (btn) {
+    const toggle = () => {
+      btn.classList.toggle('is-visible', window.scrollY > window.innerHeight * 0.6);
+    };
+    toggle();
+    window.addEventListener('scroll', toggle, { passive: true });
+
+    btn.addEventListener('click', () => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+  }
+</script>

@@ -8,35 +8,87 @@ import Icon from './Icon.astro';
   <div class="container">
     <SectionHeading eyebrow="Selected work" title="Projects" id="projects-title" />
 
+    <p class="projects__note" data-reveal>
+      <Icon name="spark" size={15} />
+      Click any card for the full story, tech stack and links.
+    </p>
+
     <div class="projects">
       {projects.map((project, i) => {
-        const isLink = Boolean(project.link);
-        const Tag = isLink ? 'a' : 'article';
+        const modalId = `project-modal-${i}`;
+        const thumb = project.thumbnail ?? project.screenshots?.[0];
         return (
-          <Tag
-            class:list={[
-              'project',
-              { 'project--featured': project.featured, 'project--placeholder': project.placeholder },
-            ]}
+          <button
+            type="button"
+            class="card"
             data-reveal
-            style={`--reveal-delay: ${i * 80}ms`}
-            {...(isLink
-              ? { href: project.link, target: '_blank', rel: 'noopener noreferrer' }
-              : {})}
+            style={`--reveal-delay: ${i * 60}ms`}
+            data-modal-target={modalId}
+            aria-haspopup="dialog"
+            aria-controls={modalId}
           >
-            <div class="project__head">
-              <h3>{project.title}</h3>
-              {isLink && (
-                <span class="project__go" aria-hidden="true">
-                  <Icon name="arrow-up-right" size={18} />
+            <span class="card__thumb">
+              {thumb ? (
+                <img src={thumb} alt="" loading="lazy" />
+              ) : (
+                <span class="card__monogram" aria-hidden="true">
+                  {project.title.charAt(0)}
                 </span>
+              )}
+              {project.featured && <span class="card__badge">Featured</span>}
+            </span>
+
+            <span class="card__body">
+              <span class="card__title">{project.title}</span>
+              <span class="card__stack">{project.tags.slice(0, 3).join(' · ')}</span>
+              <span class="card__teaser">{project.description}</span>
+            </span>
+
+            <span class="card__hint">
+              View details
+              <Icon name="arrow-up-right" size={14} />
+            </span>
+          </button>
+        );
+      })}
+    </div>
+
+    {projects.map((project, i) => {
+      const modalId = `project-modal-${i}`;
+      return (
+        <dialog
+          class:list={['pmodal', { 'pmodal--mockup': project.mockup }]}
+          id={modalId}
+          aria-labelledby={`${modalId}-title`}
+        >
+          <button type="button" class="pmodal__close" data-modal-close aria-label="Close project details">
+            <Icon name="close" size={18} />
+          </button>
+
+          <div class="pmodal__inner">
+            <div class="pmodal__content">
+              {project.featured && <span class="pmodal__badge">Featured</span>}
+              <h3 id={`${modalId}-title`}>{project.title}</h3>
+              <p class="pmodal__desc">{project.description}</p>
+
+              <ul class="pmodal__tags">
+                {project.tags.map((tag) => (
+                  <li>{tag}</li>
+                ))}
+              </ul>
+
+              {project.link ? (
+                <a class="btn pmodal__cta" href={project.link} target="_blank" rel="noopener noreferrer">
+                  {project.linkLabel ?? 'Visit'}
+                  <Icon name="arrow-up-right" size={16} />
+                </a>
+              ) : (
+                <span class="pmodal__soon">Coming soon</span>
               )}
             </div>
 
-            <p class="project__desc">{project.description}</p>
-
             {project.mockup && (
-              <div class="project__mockup">
+              <div class="pmodal__mockup">
                 <div class="phone">
                   <span class="phone__notch" aria-hidden="true" />
                   <div class="phone__screen">
@@ -53,106 +105,288 @@ import Icon from './Icon.astro';
                 </div>
               </div>
             )}
-
-            <div class="project__footer">
-              <ul class="project__tags">
-                {project.tags.map((tag) => (
-                  <li>{tag}</li>
-                ))}
-              </ul>
-              {project.link && project.linkLabel && (
-                <span class="project__link">{project.linkLabel}</span>
-              )}
-            </div>
-
-            {project.featured && <span class="project__badge">Featured</span>}
-          </Tag>
-        );
-      })}
-    </div>
+          </div>
+        </dialog>
+      );
+    })}
   </div>
 </section>
 
 <style>
+  .projects__note {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: calc(-1 * var(--space-md));
+    margin-bottom: var(--space-md);
+    font-family: var(--font-heading);
+    font-size: var(--step--1);
+    color: var(--text-dim);
+  }
+  .projects__note :global(svg) {
+    color: var(--accent);
+    flex: none;
+  }
+
   .projects {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-    gap: var(--space-md);
+    grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+    gap: var(--space-sm);
   }
-  .project {
+
+  /* ── Compact card ─────────────────────────────────────────────────────── */
+  .card {
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
-    padding: var(--space-md);
+    gap: 0.6rem;
+    padding: 0.6rem 0.6rem 0.8rem;
+    font: inherit;
+    text-align: left;
+    color: inherit;
     border-radius: var(--radius);
     border: var(--border-w) solid var(--border);
     background: var(--bg-elev);
-    overflow: hidden;
+    cursor: pointer;
     transition: border-color 0.25s var(--ease), transform 0.25s var(--ease),
       box-shadow 0.25s var(--ease);
   }
-  a.project:hover {
+  .card:hover {
     border-color: var(--accent);
     transform: translateY(-4px);
     box-shadow: var(--shadow);
   }
-  .project--featured {
-    grid-column: span 2;
-    background:
-      radial-gradient(40rem 20rem at 100% 0%, var(--glow), transparent 60%),
-      var(--bg-elev);
-    border-color: var(--border-strong);
-  }
-  .project--placeholder {
-    border-style: dashed;
-    background: var(--surface);
-    color: var(--text-muted);
-  }
-  .project__head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 0.75rem;
-  }
-  .project__head h3 {
-    font-size: var(--step-1);
-  }
-  .project--featured .project__head h3 {
-    font-size: var(--step-2);
-  }
-  .project__go {
-    flex: none;
+
+  .card__thumb {
+    position: relative;
     display: grid;
     place-items: center;
-    width: 2.2rem;
-    height: 2.2rem;
-    border-radius: var(--radius-sm);
+    aspect-ratio: 16 / 10;
+    border-radius: calc(var(--radius) - 5px);
     border: var(--border-w) solid var(--border);
-    color: var(--text-muted);
-    transition: transform 0.25s var(--ease), color 0.2s var(--ease),
-      border-color 0.2s var(--ease);
+    background: var(--bg-elev-2);
+    overflow: hidden;
   }
-  a.project:hover .project__go {
+  .card__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 0.35s var(--ease);
+  }
+  .card:hover .card__thumb img {
+    transform: scale(1.04);
+  }
+  .card__monogram {
+    font-family: var(--font-heading);
+    font-size: 2.8rem;
+    font-weight: 600;
+    line-height: 1;
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    opacity: 0.85;
+  }
+
+  .card__badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-family: var(--font-heading);
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.22rem 0.55rem;
+    border-radius: 999px;
+    color: var(--accent-contrast);
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  }
+
+  .card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.28rem;
+    padding-inline: 0.3rem;
+  }
+  .card__title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: var(--step-0);
+    letter-spacing: -0.01em;
+  }
+  .card__stack {
+    font-family: var(--font-heading);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .card__teaser {
+    color: var(--text-muted);
+    font-size: var(--step--1);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card__hint {
+    margin-top: auto;
+    padding-inline: 0.3rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     color: var(--accent);
-    border-color: var(--accent);
+  }
+  .card__hint :global(svg) {
+    transition: transform 0.25s var(--ease);
+  }
+  .card:hover .card__hint :global(svg) {
     transform: translate(2px, -2px);
   }
-  .project__desc {
+
+  /* ── Detail popup ─────────────────────────────────────────────────────── */
+  .pmodal {
+    width: min(92vw, 34rem);
+    max-height: min(85dvh, 46rem);
+    padding: 0;
+    border: var(--border-w) solid var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--bg-elev);
+    color: var(--text);
+    box-shadow: var(--shadow);
+  }
+  .pmodal--mockup {
+    width: min(92vw, 44rem);
+  }
+  .pmodal::backdrop {
+    background: rgba(28, 24, 17, 0.55);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+  }
+  .pmodal[open] {
+    animation: pmodal-in 0.35s var(--ease);
+  }
+  .pmodal[open]::backdrop {
+    animation: pmodal-backdrop-in 0.35s var(--ease);
+  }
+  @keyframes pmodal-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px) scale(0.97);
+    }
+  }
+  @keyframes pmodal-backdrop-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  /* Lock page scroll while a popup is open. */
+  :global(html:has(dialog.pmodal[open])) {
+    overflow: hidden;
+  }
+
+  .pmodal__inner {
+    max-height: inherit;
+    overflow-y: auto;
+    padding: var(--space-lg);
+  }
+  .pmodal--mockup .pmodal__inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-lg);
+    align-items: center;
+  }
+
+  .pmodal__close {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 2.3rem;
+    height: 2.3rem;
+    padding: 0;
+    border-radius: var(--radius-sm);
+    border: var(--border-w) solid var(--border);
+    background: var(--bg-elev-2);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+  }
+  .pmodal__close:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .pmodal__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    /* Keep the title clear of the close button. */
+    padding-right: 2rem;
+  }
+  .pmodal__content h3 {
+    font-size: var(--step-2);
+  }
+  .pmodal__badge {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    color: var(--accent-contrast);
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  }
+  .pmodal__desc {
     color: var(--text-muted);
     font-size: var(--step-0);
   }
-  .project--featured .project__desc {
-    max-width: 52ch;
+
+  .pmodal__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
   }
-  .project__mockup {
+  .pmodal__tags li {
+    font-family: var(--font-heading);
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.28rem 0.6rem;
+    border-radius: 999px;
+    border: var(--border-w) solid var(--border);
+    color: var(--text-muted);
+  }
+
+  .pmodal__cta {
+    margin-top: var(--space-xs);
+  }
+  .pmodal__soon {
+    font-family: var(--font-heading);
+    font-size: var(--step--1);
+    color: var(--text-dim);
+  }
+
+  .pmodal__mockup {
     display: flex;
     justify-content: center;
-    padding-block: var(--space-xs);
   }
   .phone {
     position: relative;
-    width: 9.5rem;
+    width: 9rem;
     aspect-ratio: 9 / 19;
     padding: 0.5rem;
     border-radius: 1.6rem;
@@ -192,59 +426,34 @@ import Icon from './Icon.astro';
     font-size: var(--step--1);
     color: var(--text-dim);
   }
-  .project__footer {
-    margin-top: auto;
-    padding-top: var(--space-xs);
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-  }
-  .project__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-  .project__tags li {
-    font-family: var(--font-heading);
-    font-size: 0.74rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    padding: 0.28rem 0.6rem;
-    border-radius: 999px;
-    border: var(--border-w) solid var(--border);
-    color: var(--text-muted);
-  }
-  .project__link {
-    font-size: var(--step--1);
-    color: var(--accent);
-    font-weight: 600;
-  }
-  .project__badge {
-    position: absolute;
-    top: var(--space-md);
-    right: var(--space-md);
-    font-family: var(--font-heading);
-    font-size: 0.7rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.25rem 0.6rem;
-    border-radius: 999px;
-    color: var(--accent-contrast);
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  }
-  /* Keep the badge from colliding with the featured heading / arrow. */
-  .project--featured .project__head {
-    padding-right: 5.5rem;
-  }
-  .project--featured .project__go {
-    display: none;
-  }
 
-  @media (max-width: 720px) {
-    .project--featured {
-      grid-column: span 1;
+  @media (max-width: 600px) {
+    .pmodal--mockup .pmodal__inner {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .pmodal__mockup {
+      padding-top: var(--space-xs);
     }
   }
 </style>
+
+<script>
+  // Each project card opens its matching <dialog>; native dialog handles
+  // Esc, focus containment and returning focus to the card on close.
+  document.querySelectorAll<HTMLButtonElement>('[data-modal-target]').forEach((card) => {
+    card.addEventListener('click', () => {
+      const dialog = document.getElementById(card.dataset.modalTarget ?? '');
+      if (dialog instanceof HTMLDialogElement) dialog.showModal();
+    });
+  });
+
+  document.querySelectorAll<HTMLDialogElement>('dialog.pmodal').forEach((dialog) => {
+    // A click on the dialog element itself (not its children) is the backdrop.
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    dialog.querySelector('[data-modal-close]')?.addEventListener('click', () => dialog.close());
+  });
+</script>
