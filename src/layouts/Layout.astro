@@ -28,7 +28,8 @@ const ogImageUrl = new URL(asset(site.ogImage), Astro.site ?? site.url).href;
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href={asset('favicon.svg')} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#0a0e1a" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f2ede1" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1813" />
 
     <!-- Open Graph / Twitter -->
     <meta property="og:type" content="website" />
@@ -56,11 +57,11 @@ const ogImageUrl = new URL(asset(site.ogImage), Astro.site ?? site.url).href;
       (function () {
         try {
           const stored = localStorage.getItem('theme');
-          const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-          const theme = stored || (prefersLight ? 'light' : 'dark');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const theme = stored || (prefersDark ? 'dark' : 'light');
           document.documentElement.setAttribute('data-theme', theme);
         } catch (e) {
-          document.documentElement.setAttribute('data-theme', 'dark');
+          document.documentElement.setAttribute('data-theme', 'light');
         }
       })();
     </script>

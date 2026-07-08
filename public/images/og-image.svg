@@ -1,37 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0a0e1a"/>
-      <stop offset="1" stop-color="#111727"/>
+      <stop offset="0" stop-color="#f2ede1"/>
+      <stop offset="1" stop-color="#faf7ee"/>
     </linearGradient>
     <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#5b8cff"/>
-      <stop offset="1" stop-color="#38e8c9"/>
+      <stop offset="0" stop-color="#43663c"/>
+      <stop offset="1" stop-color="#8a6a26"/>
     </linearGradient>
-    <radialGradient id="glow" cx="80%" cy="0%" r="70%">
-      <stop offset="0" stop-color="#5b8cff" stop-opacity="0.35"/>
-      <stop offset="1" stop-color="#5b8cff" stop-opacity="0"/>
-    </radialGradient>
   </defs>
 
   <rect width="1200" height="630" fill="url(#bg)"/>
-  <rect width="1200" height="630" fill="url(#glow)"/>
 
   <!-- monogram -->
   <rect x="80" y="80" width="92" height="92" rx="20" fill="url(#accent)"/>
   <text x="126" y="142" text-anchor="middle"
     font-family="'Space Grotesk', system-ui, sans-serif" font-size="46" font-weight="700"
-    fill="#0a0e1a">BJ</text>
+    fill="#f7f4ea">BJ</text>
 
   <text x="80" y="330" font-family="'Space Grotesk', system-ui, sans-serif"
-    font-size="92" font-weight="700" fill="#eef1f8">Bent Jacobs</text>
+    font-size="92" font-weight="700" fill="#27231b">Bent Jacobs</text>
 
   <text x="80" y="410" font-family="'Space Grotesk', system-ui, sans-serif"
     font-size="44" font-weight="600" fill="url(#accent)">Software Developer</text>
 
   <text x="80" y="470" font-family="'Inter', system-ui, sans-serif"
-    font-size="34" fill="#a3acc4">Salesforce · Full-stack · AI enthusiast</text>
+    font-size="34" fill="#59513f">Salesforce · Full-stack · AI enthusiast</text>
 
   <text x="80" y="560" font-family="'Inter', system-ui, sans-serif"
-    font-size="26" fill="#6f7894">Vosselaar, BE - open to Brussels</text>
+    font-size="26" fill="#6e6650">Brussels, BE - from September 2026</text>
 </svg>

@@ -1,6 +1,8 @@
 /* ════════════════════════════════════════════════════════════════════════════
    Design tokens + global base styles
-   Palette references the CV: deep navy + near-black + white, with a sharp accent.
+   Palette: "Kempen Morning" (light, default) — warm sandy paper, peat-brown
+   text, pine-green accent, dry-grass ochre. "Kempen Dusk" is its dark
+   complement. Matte and warm throughout; no glows, no cool navy.
    ════════════════════════════════════════════════════════════════════════════ */
 
 :root {
@@ -33,45 +35,43 @@
   /* Motion */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --dur: 0.5s;
-
-  /* Accent (shared across themes) */
-  --accent: #5b8cff;
-  --accent-2: #38e8c9;
-  --accent-contrast: #0a0e1a;
 }
 
-/* ── Dark theme (default) ───────────────────────────────────────────────── */
+/* ── Kempen Morning (light, default) ────────────────────────────────────── */
 :root,
-:root[data-theme='dark'] {
-  color-scheme: dark;
-  --bg: #0a0e1a;
-  --bg-elev: #111727;
-  --bg-elev-2: #161d31;
-  --surface: rgba(255, 255, 255, 0.03);
-  --border: rgba(255, 255, 255, 0.1);
-  --border-strong: rgba(255, 255, 255, 0.18);
-  --text: #eef1f8;
-  --text-muted: #a3acc4;
-  --text-dim: #6f7894;
-  --glow: rgba(91, 140, 255, 0.25);
-  --shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.8);
-}
-
-/* ── Light theme ────────────────────────────────────────────────────────── */
 :root[data-theme='light'] {
   color-scheme: light;
-  --bg: #f7f9fc;
-  --bg-elev: #ffffff;
-  --bg-elev-2: #eef2f9;
-  --surface: rgba(13, 23, 48, 0.02);
-  --border: rgba(13, 23, 48, 0.1);
-  --border-strong: rgba(13, 23, 48, 0.2);
-  --text: #0c1326;
-  --text-muted: #475069;
-  --text-dim: #818aa3;
-  --accent: #2f5fe0;
-  --glow: rgba(47, 95, 224, 0.18);
-  --shadow: 0 18px 40px -24px rgba(13, 23, 48, 0.35);
+  --bg: #f2ede1;
+  --bg-elev: #faf7ee;
+  --bg-elev-2: #e7dfcd;
+  --surface: rgba(62, 52, 34, 0.04);
+  --border: rgba(62, 52, 34, 0.14);
+  --border-strong: rgba(62, 52, 34, 0.26);
+  --text: #27231b;
+  --text-muted: #59513f;
+  --text-dim: #6e6650;
+  --accent: #43663c;
+  --accent-2: #8a6a26;
+  --accent-contrast: #f7f4ea;
+  --shadow: 0 18px 40px -24px rgba(62, 52, 34, 0.3);
+}
+
+/* ── Kempen Dusk (dark) ─────────────────────────────────────────────────── */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #1b1813;
+  --bg-elev: #242019;
+  --bg-elev-2: #2e2820;
+  --surface: rgba(242, 237, 225, 0.04);
+  --border: rgba(242, 237, 225, 0.12);
+  --border-strong: rgba(242, 237, 225, 0.2);
+  --text: #ece5d3;
+  --text-muted: #b0a68f;
+  --text-dim: #9a8f77;
+  --accent: #a8c397;
+  --accent-2: #d2a75e;
+  --accent-contrast: #1b1813;
+  --shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.55);
 }
 
 /* ── Reset ──────────────────────────────────────────────────────────────── */
@@ -101,16 +101,15 @@ body {
   transition: background-color 0.4s var(--ease), color 0.4s var(--ease);
 }
 
-/* Decorative background glow */
+/* Very faint paper-grain texture — matte replacement for the old tech glow. */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background:
-    radial-gradient(60rem 40rem at 80% -10%, var(--glow), transparent 60%),
-    radial-gradient(50rem 40rem at -10% 20%, rgba(56, 232, 201, 0.08), transparent 55%);
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 h1,
@@ -185,7 +184,7 @@ ul {
 
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px -10px var(--glow);
+  box-shadow: var(--shadow);
 }
 
 .btn:active {
@@ -263,13 +262,6 @@ ul {
 .lead {
   font-size: var(--step-1);
   color: var(--text-muted);
-}
-
-.gradient-text {
-  background: linear-gradient(110deg, var(--text) 30%, var(--accent) 75%, var(--accent-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
 /* ── Reduced motion ─────────────────────────────────────────────────────── */

@@ -11,9 +11,6 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
   <div class="stage__track"></div>
   <div class="stage__fill" id="stage-fill"></div>
 
-  <!-- checkered finish line at the very end of the track -->
-  <div class="stage__finish"></div>
-
   <!-- the rider, riding the leading edge of the fill -->
   <span class="stage__rider" id="stage-rider">
     <img src={asset('images/ridleynoah.png')} alt="" width="28" height="28" />
@@ -21,14 +18,16 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
 
   <!-- KOM polka-dot flag at the finish -->
   <div class="stage__summit" id="stage-summit">
+    <!-- Fixed illustration colors: the KOM jersey is red dots on white, but
+         softened to warm paper + muted brick so it sits in the Kempen palette. -->
     <svg class="stage__flag" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
       <rect x="3" y="2" width="1.6" height="20" rx="0.8" fill="currentColor" />
-      <rect x="4.6" y="2.5" width="15" height="10" rx="1.2" fill="#fff" stroke="#e11" stroke-width="0.6" />
-      <circle cx="8" cy="5.5" r="1.1" fill="#e11" />
-      <circle cx="12.5" cy="5.5" r="1.1" fill="#e11" />
-      <circle cx="17" cy="5.5" r="1.1" fill="#e11" />
-      <circle cx="10.2" cy="8.5" r="1.1" fill="#e11" />
-      <circle cx="14.7" cy="8.5" r="1.1" fill="#e11" />
+      <rect x="4.6" y="2.5" width="15" height="10" rx="1.2" fill="#f7f3e8" stroke="#b5402c" stroke-width="0.6" />
+      <circle cx="8" cy="5.5" r="1.1" fill="#b5402c" />
+      <circle cx="12.5" cy="5.5" r="1.1" fill="#b5402c" />
+      <circle cx="17" cy="5.5" r="1.1" fill="#b5402c" />
+      <circle cx="10.2" cy="8.5" r="1.1" fill="#b5402c" />
+      <circle cx="14.7" cy="8.5" r="1.1" fill="#b5402c" />
     </svg>
   </div>
 </div>
@@ -55,24 +54,6 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
     background: linear-gradient(90deg, var(--accent), var(--accent-2));
     box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 60%, transparent);
   }
-  /* Checkered finish line at the right edge of the bar. */
-  .stage__finish {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 14px;
-    height: 7px;
-    --sq: 3.5px;
-    background-color: #fff;
-    background-image:
-      linear-gradient(45deg, #111 25%, transparent 25%, transparent 75%, #111 75%),
-      linear-gradient(45deg, #111 25%, transparent 25%, transparent 75%, #111 75%);
-    background-size: calc(var(--sq) * 2) calc(var(--sq) * 2);
-    background-position: 0 0, var(--sq) var(--sq);
-    border-radius: 2px;
-    box-shadow: 0 0 0 1px color-mix(in srgb, var(--text) 20%, transparent);
-  }
-
   .stage__rider {
     position: absolute;
     left: 0;

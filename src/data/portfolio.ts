@@ -53,10 +53,12 @@ export interface Project {
   placeholder?: boolean;
   /** Highlights a flagship project for extra visual weight. */
   featured?: boolean;
-  /** Renders a phone-mockup screenshot slot inside the card. */
+  /** Renders a phone-mockup screenshot slot inside the detail popup. */
   mockup?: boolean;
   /** Screenshot paths shown in the mockup. Empty/undefined shows the "coming soon" placeholder. */
   screenshots?: string[];
+  /** Small image shown on the compact card. Falls back to screenshots[0], then a monogram. */
+  thumbnail?: string;
 }
 
 export interface Certification {
@@ -86,7 +88,7 @@ export const site = {
   name: 'Bent Jacobs',
   title: 'Bent Jacobs - Software Developer',
   description:
-    'Bent Jacobs - Software Developer specialising in Salesforce (Apex, LWC, Agentforce), full-stack engineering and AI-assisted development. Based in Vosselaar, BE - open to Brussels.',
+    'Bent Jacobs - Software Developer specialising in Salesforce (Apex, LWC, Agentforce), full-stack engineering and AI-assisted development. Based in Brussels, BE from September 2026.',
   // Used for Open Graph / canonical. Combined with `base` at render time.
   url: 'https://bentj-01.github.io/dev-portfolio',
   ogImage: 'images/og-image.svg',
@@ -126,7 +128,7 @@ export const nav: NavLink[] = [
 export const about = {
   heading: 'About',
   paragraphs: [
-    'I’m a software developer who feels most at home on the frontend (Flutter, React/React Native, plain HTML/CSS/JS), backed by solid backend foundations I picked up during my studies (Java, SQL, Apex, Progress OpenEdge).',
+    'I’m a software developer who feels most at home on the frontend (Flutter, React/React Native, plain HTML/CSS/JS), backed by solid backend foundations built up during my studies and previous roles (Java, SQL, Apex, Progress OpenEdge).',
     'Today I build and automate on Salesforce: Lightning Web Components, Apex, Visualforce and Flows, taking projects from analysis right through to deployment alongside a close-knit team and the clients we build for. I enjoy picking up new tools and frameworks, if there’s solid documentation, I’ll figure it out.',
     'I’m genuinely curious about AI - I hold the Salesforce Agentforce Specialist certification (building AI agents) and I lean on AI-assisted development to ship better, faster.',
     'I like the part of the job where a messy business problem turns into a clean, maintainable solution. Away from the keyboard you’ll usually find me out on the road bike, putting in the kilometres on the flat roads of the Kempen.',
@@ -343,7 +345,7 @@ export const contact = {
   heading: 'Let’s talk',
   intro:
     'Open to software, Salesforce and AI developer roles. The fastest way to reach me is email - I’m happy to chat.',
-  location: 'Vosselaar, BE - open to Brussels',
+  location: 'Brussels, BE - from September 2026',
   links: [
     {
       label: 'Email',
@@ -367,8 +369,8 @@ export const contact = {
     },
     {
       label: 'Location',
-      value: 'Vosselaar, BE - open to Brussels',
-      href: 'https://www.openstreetmap.org/search?query=Vosselaar',
+      value: 'Brussels, BE - from September 2026',
+      href: 'https://www.openstreetmap.org/search?query=Brussels',
       icon: 'pin',
       external: true,
     },

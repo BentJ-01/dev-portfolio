@@ -9,12 +9,14 @@ interface Props {
     | 'pin'
     | 'bike'
     | 'arrow-down'
+    | 'arrow-up'
     | 'arrow-up-right'
     | 'download'
     | 'sun'
     | 'moon'
     | 'spark'
-    | 'check';
+    | 'check'
+    | 'close';
   size?: number;
   class?: string;
 }
@@ -30,12 +32,14 @@ const paths: Record<Props['name'], string> = {
   pin: '<path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
   bike: '<circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M5.5 17.5 10 8h4l2.5 4.5M9 8h6M14 8l4.5 9.5"/>',
   'arrow-down': '<path d="M12 5v14M6 13l6 6 6-6"/>',
+  'arrow-up': '<path d="M12 19V5M6 11l6-6 6 6"/>',
   'arrow-up-right': '<path d="M7 17 17 7M9 7h8v8"/>',
   download: '<path d="M12 3v12M7 11l5 5 5-5M5 21h14"/>',
   sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
   moon: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
   spark: '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',
   check: '<path d="M20 6 9 17l-5-5"/>',
+  close: '<path d="M6 6l12 12M18 6 6 18"/>',
 };
 
 // Brand/solid glyphs are filled shapes rather than line icons.
