@@ -255,7 +255,10 @@ import Icon from './Icon.astro';
 
   /* ── Detail popup ─────────────────────────────────────────────────────── */
   .pmodal {
-    width: min(92vw, 34rem);
+    /* The global reset zeroes the UA's `dialog { margin: auto }`, which is
+       what centers a modal dialog — restore it. */
+    margin: auto;
+    width: min(calc(100vw - 2rem), 34rem);
     max-height: min(85dvh, 46rem);
     padding: 0;
     border: var(--border-w) solid var(--border-strong);
@@ -265,7 +268,7 @@ import Icon from './Icon.astro';
     box-shadow: var(--shadow);
   }
   .pmodal--mockup {
-    width: min(92vw, 44rem);
+    width: min(calc(100vw - 2rem), 44rem);
   }
   .pmodal::backdrop {
     background: rgba(28, 24, 17, 0.55);
@@ -369,6 +372,11 @@ import Icon from './Icon.astro';
     border-radius: 999px;
     border: var(--border-w) solid var(--border);
     color: var(--text-muted);
+    transition: border-color 0.2s var(--ease), color 0.2s var(--ease);
+  }
+  .pmodal__tags li:hover {
+    border-color: var(--accent-2);
+    color: var(--accent-2);
   }
 
   .pmodal__cta {
@@ -428,6 +436,9 @@ import Icon from './Icon.astro';
   }
 
   @media (max-width: 600px) {
+    .pmodal__inner {
+      padding: var(--space-md);
+    }
     .pmodal--mockup .pmodal__inner {
       display: flex;
       flex-direction: column;
@@ -435,6 +446,9 @@ import Icon from './Icon.astro';
     }
     .pmodal__mockup {
       padding-top: var(--space-xs);
+    }
+    .pmodal__content h3 {
+      font-size: var(--step-1);
     }
   }
 </style>

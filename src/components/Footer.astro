@@ -98,7 +98,11 @@ const socials = contact.links.filter((l) => l.icon === 'github' || l.icon === 'l
     transition: color 0.2s var(--ease), border-color 0.2s var(--ease),
       transform 0.2s var(--ease);
   }
-  .footer__socials a:hover,
+  .footer__socials a:hover {
+    color: var(--accent-2);
+    border-color: var(--accent-2);
+    transform: translateY(-2px);
+  }
   .footer__bike:hover {
     color: var(--accent);
     border-color: var(--accent);

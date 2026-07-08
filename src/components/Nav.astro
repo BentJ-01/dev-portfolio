@@ -120,6 +120,10 @@ import ThemeToggle from './ThemeToggle.astro';
   .nav__links a.is-active::after {
     transform: scaleX(1);
   }
+  /* Active section = "you are here" marker in the action color. */
+  .nav__links a.is-active::after {
+    background: var(--accent-2);
+  }
   .nav__actions {
     display: flex;
     align-items: center;
