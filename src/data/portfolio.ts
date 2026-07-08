@@ -55,9 +55,9 @@ export interface Project {
   featured?: boolean;
   /** Renders a phone-mockup screenshot slot inside the detail popup. */
   mockup?: boolean;
-  /** Screenshot paths shown in the mockup. Empty/undefined shows the "coming soon" placeholder. */
+  /** Screenshot paths shown in the mockup gallery. Empty/undefined shows the "coming soon" placeholder. */
   screenshots?: string[];
-  /** Small image shown on the compact card. Falls back to screenshots[0], then a monogram. */
+  /** Small image shown on the compact card. Use a banner image when available. Falls back to screenshots[0], then a monogram. */
   thumbnail?: string;
 }
 
@@ -253,6 +253,7 @@ export const projects: Project[] = [
     link: 'https://www.nokout.be',
     linkLabel: 'nokout.be',
     tags: ['HTML', 'CSS', 'JavaScript', 'Social media'],
+    thumbnail: 'images/nokout/noimage.png',
   },
   {
     title: 'Slipstream',
@@ -262,6 +263,12 @@ export const projects: Project[] = [
     linkLabel: 'View repo',
     tags: ['Python', 'FastAPI', 'Flutter', 'Garmin API', 'Claude API'],
     mockup: true,
+    screenshots: [
+      'images/slipstream/ss1.png',
+      'images/slipstream/ss2.png',
+      'images/slipstream/ss3.png',
+      'images/slipstream/ss4.png',
+    ],
   },
   {
     title: 'NoteTaker',
@@ -279,6 +286,12 @@ export const projects: Project[] = [
     linkLabel: 'View repo',
     tags: ['Flutter', 'Dart', 'Supabase', 'Google Maps'],
     mockup: true,
+    thumbnail: 'images/flare/flarebanner.png',
+    screenshots: [
+      'images/flare/flare1.png',
+      'images/flare/flare2.png',
+      'images/flare/flare3.png',
+    ],
   },
   {
     title: 'This portfolio',
@@ -295,6 +308,7 @@ export const projects: Project[] = [
     link: 'https://www.tuinarchitectuurwoest.com',
     linkLabel: 'Visit site',
     tags: ['HTML', 'CSS', 'JavaScript', 'SEO'],
+    thumbnail: 'images/woest/woestbanner.png',
   },
   {
     title: 'Segment Hunter',
@@ -304,6 +318,11 @@ export const projects: Project[] = [
     linkLabel: 'View repo',
     tags: ['Flutter', 'Dart', 'Supabase', 'Strava API'],
     mockup: true,
+    screenshots: [
+      'images/segmenthunter/sh1.png',
+      'images/segmenthunter/sh2.png',
+      'images/segmenthunter/sh3.png',
+    ],
   },
 ];
 

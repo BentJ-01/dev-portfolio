@@ -2,6 +2,9 @@
 import { projects } from '../data/portfolio';
 import SectionHeading from './SectionHeading.astro';
 import Icon from './Icon.astro';
+
+const base = import.meta.env.BASE_URL;
+const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
 ---
 
 <section class="section" id="projects" aria-labelledby="projects-title">
@@ -29,7 +32,7 @@ import Icon from './Icon.astro';
           >
             <span class="card__thumb">
               {thumb ? (
-                <img src={thumb} alt="" loading="lazy" />
+                <img src={asset(thumb)} alt="" loading="lazy" />
               ) : (
                 <span class="card__monogram" aria-hidden="true">
                   {project.title.charAt(0)}
@@ -55,6 +58,7 @@ import Icon from './Icon.astro';
 
     {projects.map((project, i) => {
       const modalId = `project-modal-${i}`;
+      const screenshots = project.screenshots ?? [];
       return (
         <dialog
           class:list={['pmodal', { 'pmodal--mockup': project.mockup }]}
@@ -89,20 +93,36 @@ import Icon from './Icon.astro';
 
             {project.mockup && (
               <div class="pmodal__mockup">
-                <div class="phone">
-                  <span class="phone__notch" aria-hidden="true" />
-                  <div class="phone__screen">
-                    {project.screenshots && project.screenshots.length > 0 ? (
-                      <img
-                        src={project.screenshots[0]}
-                        alt={`${project.title} app screenshot`}
-                        loading="lazy"
-                      />
-                    ) : (
-                      <span class="phone__placeholder">Screenshots coming soon</span>
-                    )}
+                {screenshots.length > 0 ? (
+                  <div class="phone-strip" aria-label={`${project.title} app screenshots`}>
+                    {screenshots.map((screenshot, screenshotIndex) => (
+                      <div class="phone">
+                        <span class="phone__notch" aria-hidden="true" />
+                        <div class="phone__screen">
+                          <img
+                            src={asset(screenshot)}
+                            alt={`${project.title} app screenshot ${screenshotIndex + 1}`}
+                            loading="lazy"
+                          />
+                        </div>
+                        <img
+                          class="phone__preview"
+                          src={asset(screenshot)}
+                          alt=""
+                          loading="lazy"
+                          aria-hidden="true"
+                        />
+                      </div>
+                    ))}
                   </div>
-                </div>
+                ) : (
+                  <div class="phone">
+                    <span class="phone__notch" aria-hidden="true" />
+                    <div class="phone__screen">
+                      <span class="phone__placeholder">Screenshots coming soon</span>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -266,9 +286,10 @@ import Icon from './Icon.astro';
     background: var(--bg-elev);
     color: var(--text);
     box-shadow: var(--shadow);
+    overflow: visible;
   }
   .pmodal--mockup {
-    width: min(calc(100vw - 2rem), 44rem);
+    width: min(calc(100vw - 2rem), 64rem);
   }
   .pmodal::backdrop {
     background: rgba(28, 24, 17, 0.55);
@@ -304,10 +325,9 @@ import Icon from './Icon.astro';
     padding: var(--space-lg);
   }
   .pmodal--mockup .pmodal__inner {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: var(--space-lg);
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
   }
 
   .pmodal__close {
@@ -390,25 +410,59 @@ import Icon from './Icon.astro';
 
   .pmodal__mockup {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    min-width: 0;
+    width: 100%;
+  }
+  .phone-strip {
+    display: flex;
+    gap: 1.2rem;
+    width: 100%;
+    max-width: 100%;
+    padding: 0.25rem 0.2rem 0.9rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-color: var(--border-strong) transparent;
   }
   .phone {
+    flex: 0 0 auto;
     position: relative;
-    width: 9rem;
+    width: 13rem;
     aspect-ratio: 9 / 19;
-    padding: 0.5rem;
-    border-radius: 1.6rem;
+    padding: 0.62rem;
+    border-radius: 2rem;
     border: var(--border-w) solid var(--border-strong);
     background: var(--bg-elev-2);
     box-shadow: var(--shadow);
+    scroll-snap-align: center;
+  }
+  .phone::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 18;
+    pointer-events: none;
+    background: rgba(28, 24, 17, 0);
+    -webkit-backdrop-filter: blur(0);
+    backdrop-filter: blur(0);
+    opacity: 0;
+    transition: opacity 0.2s var(--ease), background-color 0.2s var(--ease),
+      backdrop-filter 0.2s var(--ease);
+  }
+  .phone:hover::after,
+  .phone:focus-within::after {
+    background: rgba(28, 24, 17, 0.68);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    opacity: 1;
   }
   .phone__notch {
     position: absolute;
     top: 0.55rem;
     left: 50%;
     transform: translateX(-50%);
-    width: 2.6rem;
-    height: 0.32rem;
+    width: 3.4rem;
+    height: 0.38rem;
     border-radius: 999px;
     background: var(--border-strong);
   }
@@ -417,7 +471,7 @@ import Icon from './Icon.astro';
     place-items: center;
     width: 100%;
     height: 100%;
-    border-radius: 1.1rem;
+    border-radius: 1.38rem;
     background: var(--surface);
     border: var(--border-w) solid var(--border);
     overflow: hidden;
@@ -426,6 +480,32 @@ import Icon from './Icon.astro';
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+  .phone__preview {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 19;
+    width: min(26rem, calc((100dvh - 3rem) * 9 / 19), calc(100vw - 3rem));
+    max-height: calc(100dvh - 3rem);
+    aspect-ratio: 9 / 19;
+    object-fit: contain;
+    border-radius: 1.6rem;
+    border: var(--border-w) solid var(--border-strong);
+    background: var(--bg-elev-2);
+    box-shadow: 0 28px 80px -24px rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transform: translate(-50%, -50%) scale(0.94);
+    transition: opacity 0.2s var(--ease), transform 0.2s var(--ease),
+      visibility 0.2s var(--ease);
+  }
+  .phone:hover .phone__preview,
+  .phone:focus-within .phone__preview {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
   }
   .phone__placeholder {
     padding: 0 1rem;
@@ -440,12 +520,19 @@ import Icon from './Icon.astro';
       padding: var(--space-md);
     }
     .pmodal--mockup .pmodal__inner {
-      display: flex;
-      flex-direction: column;
       align-items: stretch;
     }
     .pmodal__mockup {
       padding-top: var(--space-xs);
+      justify-content: flex-start;
+      width: 100%;
+    }
+    .phone-strip {
+      max-width: 100%;
+      width: 100%;
+    }
+    .phone {
+      width: min(13rem, 72vw);
     }
     .pmodal__content h3 {
       font-size: var(--step-1);

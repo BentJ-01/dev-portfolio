@@ -41,7 +41,7 @@
 :root,
 :root[data-theme='light'] {
   color-scheme: light;
-  --bg: #f2ede1;
+  --bg: #c9b99a;
   --bg-elev: #faf7ee;
   --bg-elev-2: #e7dfcd;
   --surface: rgba(62, 52, 34, 0.04);
@@ -59,7 +59,7 @@
 /* ── Dark theme: "Kempen Dusk" (v3 — higher contrast) ────────────────── */
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --bg: #0f110c;
+  --bg: #040504;
   --bg-elev: #20241a;
   --bg-elev-2: #2e3423;
   --surface: rgba(247, 244, 234, 0.05);
