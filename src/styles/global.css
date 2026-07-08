@@ -56,22 +56,22 @@
   --shadow: 0 18px 40px -24px rgba(62, 52, 34, 0.3);
 }
 
-/* ── Kempen Dusk (dark) ─────────────────────────────────────────────────── */
+/* ── Dark theme: "Kempen Dusk" (v2) ─────────────────────────────────── */
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --bg: #1b1813;
-  --bg-elev: #242019;
-  --bg-elev-2: #2e2820;
-  --surface: rgba(242, 237, 225, 0.04);
-  --border: rgba(242, 237, 225, 0.12);
-  --border-strong: rgba(242, 237, 225, 0.2);
-  --text: #ece5d3;
-  --text-muted: #b0a68f;
-  --text-dim: #9a8f77;
-  --accent: #a8c397;
-  --accent-2: #d2a75e;
-  --accent-contrast: #1b1813;
-  --shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.55);
+  --bg: #14170f;
+  --bg-elev: #1d2117;
+  --bg-elev-2: #272c1f;
+  --surface: rgba(242, 237, 224, 0.04);
+  --border: rgba(242, 237, 224, 0.1);
+  --border-strong: rgba(242, 237, 224, 0.2);
+  --text: #f2ede0;
+  --text-muted: #a8a18c;
+  --text-dim: #6b6558;
+  --accent: #8fbf7a;
+  --accent-2: #e8935a;
+  --accent-contrast: #14170f;
+  --shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.75);
 }
 
 /* ── Reset ──────────────────────────────────────────────────────────────── */
