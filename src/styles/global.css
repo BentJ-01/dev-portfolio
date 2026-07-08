@@ -56,22 +56,22 @@
   --shadow: 0 18px 40px -24px rgba(62, 52, 34, 0.3);
 }
 
-/* ── Dark theme: "Kempen Dusk" (v2) ─────────────────────────────────── */
+/* ── Dark theme: "Kempen Dusk" (v3 — higher contrast) ────────────────── */
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --bg: #14170f;
-  --bg-elev: #1d2117;
-  --bg-elev-2: #272c1f;
-  --surface: rgba(242, 237, 224, 0.04);
-  --border: rgba(242, 237, 224, 0.1);
-  --border-strong: rgba(242, 237, 224, 0.2);
-  --text: #f2ede0;
-  --text-muted: #a8a18c;
-  --text-dim: #6b6558;
-  --accent: #8fbf7a;
-  --accent-2: #e8935a;
-  --accent-contrast: #14170f;
-  --shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.75);
+  --bg: #0f110c;
+  --bg-elev: #20241a;
+  --bg-elev-2: #2e3423;
+  --surface: rgba(247, 244, 234, 0.05);
+  --border: rgba(247, 244, 234, 0.14);
+  --border-strong: rgba(247, 244, 234, 0.3);
+  --text: #f7f4ea;
+  --text-muted: #b8b19c;
+  --text-dim: #7c7562;
+  --accent: #8fd66f;
+  --accent-2: #f2a05e;
+  --accent-contrast: #0f110c;
+  --shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.85);
 }
 
 /* ── Reset ──────────────────────────────────────────────────────────────── */
