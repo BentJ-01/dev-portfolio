@@ -253,12 +253,11 @@ export const projects: Project[] = [
     link: 'https://www.nokout.be',
     linkLabel: 'nokout.be',
     tags: ['HTML', 'CSS', 'JavaScript', 'Social media'],
-    featured: true,
   },
   {
     title: 'Slipstream',
     description:
-      'An adaptive multi-sport training planner for the hybrid athlete: instead of handing you a rigid 12-week schedule, it starts from your actual week - free hours, how you feel, the weather - and continuously rebuilds a realistic plan around it. A deterministic Python/FastAPI scheduling engine drives the plan, with two-way Garmin sync, Strava import, Open-Meteo weather rules and an optional Claude layer that parses free-text check-ins, all served to a Flutter app for iOS and Android.',
+      'An adaptive multi-sport training planner for balancing sport with work and a personal life: instead of a rigid 12-week schedule that ties you up, it starts from your actual week - free hours, how you feel, the weather - and continuously rebuilds a realistic plan that adapts to your life, not the other way round. A deterministic Python/FastAPI scheduling engine drives the plan, with two-way Garmin sync, Strava import, Open-Meteo weather rules and an optional Claude layer that parses free-text check-ins, all served to a Flutter app for iOS and Android.',
     link: 'https://github.com/BentJ-01/Slipstream',
     linkLabel: 'View repo',
     tags: ['Python', 'FastAPI', 'Flutter', 'Garmin API', 'Claude API'],
@@ -275,7 +274,7 @@ export const projects: Project[] = [
   {
     title: 'Flare',
     description:
-      'A festival regroup app born from years of organising and attending festivals: create a group, share a 6-character code, and when someone gets lost they hit the FLARE button - it pings the whole crew and opens live location sharing for 15 minutes. No always-on tracking, a dark minimal UI, and built to survive a saturated festival network and a dying battery. Flutter on top of Supabase Realtime, with Google Maps and push notifications.',
+      'A festival regroup app born from years of attending festivals and losing my friends on the festival ground: create a group, share a 6-character code, and when someone gets lost they hit the FLARE button - it pings the whole crew and opens live location sharing for 15 minutes. No always-on tracking, a dark minimal UI, and built to survive a saturated festival network and a dying battery. Flutter on top of Supabase Realtime, with Google Maps and push notifications.',
     link: 'https://github.com/BentJ-01/flare',
     linkLabel: 'View repo',
     tags: ['Flutter', 'Dart', 'Supabase', 'Google Maps'],
