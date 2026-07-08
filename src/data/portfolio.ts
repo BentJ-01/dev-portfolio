@@ -254,6 +254,32 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    title: 'Slipstream',
+    description:
+      'An adaptive multi-sport training planner for the hybrid athlete: instead of handing you a rigid 12-week schedule, it starts from your actual week - free hours, how you feel, the weather - and continuously rebuilds a realistic plan around it. A deterministic Python/FastAPI scheduling engine drives the plan, with two-way Garmin sync, Strava import, Open-Meteo weather rules and an optional Claude layer that parses free-text check-ins, all served to a Flutter app for iOS and Android.',
+    link: 'https://github.com/BentJ-01/Slipstream',
+    linkLabel: 'View repo',
+    tags: ['Python', 'FastAPI', 'Flutter', 'Garmin API', 'Claude API'],
+    mockup: true,
+  },
+  {
+    title: 'NoteTaker',
+    description:
+      'An internal tool I built at Ittes for Salesforce development meetings: jot down requirements and meeting notes in shorthand per feature while the conversation happens, let Claude expand them into full prose, and assemble everything into standardized documentation with Word export - so the write-up is done minutes after the meeting, not days later.',
+    link: 'https://github.com/BentJ-01/notetaker',
+    linkLabel: 'View repo',
+    tags: ['Next.js', 'TypeScript', 'Supabase', 'Claude API'],
+  },
+  {
+    title: 'Flare',
+    description:
+      'A festival regroup app born from years of organising and attending festivals: create a group, share a 6-character code, and when someone gets lost they hit the FLARE button - it pings the whole crew and opens live location sharing for 15 minutes. No always-on tracking, a dark minimal UI, and built to survive a saturated festival network and a dying battery. Flutter on top of Supabase Realtime, with Google Maps and push notifications.',
+    link: 'https://github.com/BentJ-01/flare',
+    linkLabel: 'View repo',
+    tags: ['Flutter', 'Dart', 'Supabase', 'Google Maps'],
+    mockup: true,
+  },
+  {
     title: 'This portfolio',
     description:
       'The site you’re looking at - built with Astro and TypeScript, deployed to GitHub Pages with a CI/CD pipeline via GitHub Actions. Fast, accessible and built from clean, typed content.',
