@@ -49,7 +49,6 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
                 </span>
               )}
               {project.featured && <span class="card__badge">Featured</span>}
-              <span class="card__index">0{i + 1}</span>
             </span>
 
             <span class="card__body">
@@ -259,20 +258,6 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
     line-height: 1;
     color: var(--accent);
     opacity: 0.7;
-  }
-
-  .card__index {
-    position: absolute;
-    left: 0.75rem;
-    bottom: 0.7rem;
-    padding: 0.2rem 0.45rem;
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    border-radius: 4px;
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    color: #fff;
-    background: rgba(30, 29, 26, 0.72);
   }
 
   .card__badge {
