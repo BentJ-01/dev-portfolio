@@ -6,8 +6,7 @@ import ThemeToggle from './ThemeToggle.astro';
 <header class="nav" id="site-nav">
   <div class="container nav__inner">
     <a class="nav__brand" href="#top" aria-label={`${hero.name} - back to top`}>
-      <span class="nav__mark" aria-hidden="true">BJ</span>
-      <span class="nav__name">{hero.name}</span>
+      <span class="nav__mark" aria-hidden="true">Bent<span>.</span></span>
     </a>
 
     <nav class="nav__links" aria-label="Primary">
@@ -52,9 +51,9 @@ import ThemeToggle from './ThemeToggle.astro';
     position: sticky;
     top: 0;
     z-index: 100;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    background: color-mix(in srgb, var(--bg) 72%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
     border-bottom: var(--border-w) solid transparent;
     transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease);
   }
@@ -66,35 +65,27 @@ import ThemeToggle from './ThemeToggle.astro';
     align-items: center;
     justify-content: space-between;
     gap: var(--space-md);
-    height: 4.25rem;
+    height: 4rem;
   }
   .nav__brand {
     display: inline-flex;
+    flex: none;
     align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-heading);
-    font-weight: 600;
+    gap: 0.75rem;
+    font-weight: 500;
   }
   .nav__mark {
-    display: grid;
-    place-items: center;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    letter-spacing: 0.02em;
-    color: var(--accent-contrast);
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    font-family: var(--font-heading);
+    font-size: 1.45rem;
+    letter-spacing: -0.04em;
   }
-  .nav__name {
-    font-size: var(--step-0);
-  }
+  .nav__mark span { color: var(--accent); }
   .nav__links ul {
     display: flex;
-    gap: clamp(0.6rem, 1.6vw, 1.5rem);
+    gap: clamp(1rem, 2.5vw, 2.25rem);
   }
   .nav__links a {
-    font-size: var(--step--1);
+    font-size: 0.78rem;
     color: var(--text-muted);
     padding: 0.4rem 0.2rem;
     position: relative;
@@ -105,8 +96,8 @@ import ThemeToggle from './ThemeToggle.astro';
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -2px;
-    height: 2px;
+    bottom: 0;
+    height: 1px;
     background: var(--accent);
     transform: scaleX(0);
     transform-origin: left;
@@ -126,8 +117,10 @@ import ThemeToggle from './ThemeToggle.astro';
   }
   .nav__actions {
     display: flex;
+    flex: none;
     align-items: center;
     gap: 0.6rem;
+    margin-left: auto;
   }
   .nav__burger {
     display: none;
@@ -137,7 +130,7 @@ import ThemeToggle from './ThemeToggle.astro';
     width: 2.5rem;
     height: 2.5rem;
     padding: 0 0.6rem;
-    border-radius: var(--radius-sm);
+    border-radius: 50%;
     border: var(--border-w) solid var(--border);
     background: var(--surface);
     cursor: pointer;
@@ -187,6 +180,9 @@ import ThemeToggle from './ThemeToggle.astro';
     .nav__burger {
       display: flex;
     }
+  }
+  @media (max-width: 460px) {
+    .nav__inner { gap: 0.75rem; }
   }
 </style>
 

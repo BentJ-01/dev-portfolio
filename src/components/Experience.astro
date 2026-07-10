@@ -1,52 +1,53 @@
 ---
 import { experience, leadership, leadershipBlurb } from '../data/portfolio';
 import SectionHeading from './SectionHeading.astro';
-import Icon from './Icon.astro';
 ---
 
-<section class="section" id="experience" aria-labelledby="experience-title">
+<section class="section experience-section" id="experience" aria-labelledby="experience-title">
   <div class="container">
     <SectionHeading eyebrow="Where I've been" title="Experience" id="experience-title" />
 
-    <ol class="timeline">
+    <ol class="jobs">
       {experience.map((job, i) => (
-        <li class="timeline__item" data-reveal style={`--reveal-delay: ${i * 70}ms`}>
-          <div class="timeline__dot" aria-hidden="true"></div>
-          <div class="timeline__card">
-            <div class="timeline__top">
-              <h3>
-                {job.role}
-                <span class="timeline__at"> · {job.company}</span>
-              </h3>
-              <span class="timeline__period">{job.period}</span>
-            </div>
-            <p class="timeline__loc">{job.company} - {job.location}</p>
-            <ul class="timeline__points">
-              {job.highlights.map((h) => (
-                <li>
-                  <Icon name="check" size={16} />
-                  <span>{h}</span>
-                </li>
-              ))}
+        <li class="job" data-reveal style={`--reveal-delay: ${i * 70}ms`}>
+          <div class="job__when">
+            <span>{job.period}</span>
+            <span>{job.location}</span>
+          </div>
+          <div class="job__main">
+            <h3>{job.role}</h3>
+            <p class="job__company">at {job.company}</p>
+            <ul class="job__points">
+              {job.highlights.map((highlight) => <li>{highlight}</li>)}
             </ul>
           </div>
         </li>
       ))}
     </ol>
 
-    <!-- Community & teamwork sub-block - supporting soft-skill evidence. -->
-    <aside class="leadership" data-reveal aria-labelledby="leadership-title">
-      <h3 id="leadership-title" class="leadership__title">
-        <Icon name="spark" size={18} /> Community &amp; teamwork
-      </h3>
-      <p class="leadership__blurb">{leadershipBlurb}</p>
-      <ul class="leadership__list">
+    <aside class="volunteering" data-reveal aria-labelledby="volunteering-title">
+      <header class="volunteering__intro">
+        <div>
+          <span class="eyebrow">Volunteering</span>
+          <h3 id="volunteering-title">Community &amp; teamwork</h3>
+        </div>
+        <p>{leadershipBlurb}</p>
+      </header>
+
+      <ul class="volunteering__list">
         {leadership.map((item) => (
           <li>
-            <span class="leadership__role">{item.role}</span>
-            <span class="leadership__org">{item.org}, {item.location}</span>
-            <span class="leadership__period">{item.period}</span>
-            {item.note && <span class="leadership__note">{item.note}</span>}
+            <strong>{item.role}</strong>
+            <span class="volunteering__org">{item.org} · {item.location}</span>
+            {item.note && <p>{item.note}</p>}
+            <div class="volunteering__footer">
+              <span class="volunteering__period">{item.period}</span>
+              {item.link && (
+                <a href={item.link} target="_blank" rel="noopener noreferrer">
+                  {item.linkLabel ?? 'Visit website'} <span aria-hidden="true">↗</span>
+                </a>
+              )}
+            </div>
           </li>
         ))}
       </ul>
@@ -55,142 +56,142 @@ import Icon from './Icon.astro';
 </section>
 
 <style>
-  .timeline {
-    position: relative;
+  .experience-section {
+    background: var(--bg-elev);
+  }
+  .experience-section::before { display: none; }
+  .jobs {
+    border-top: 1px solid var(--border-strong);
+  }
+  .job {
+    display: grid;
+    grid-template-columns: minmax(10rem, 0.42fr) minmax(0, 1.58fr);
+    gap: clamp(2rem, 7vw, 6rem);
+    padding-block: clamp(2.25rem, 5vw, 4rem);
+    border-bottom: 1px solid var(--border);
+  }
+  .job__when {
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
-    padding-left: 1.75rem;
-    list-style: none;
+    gap: 0.25rem;
+    font-size: var(--step--1);
+    color: var(--text-muted);
   }
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 7px;
-    top: 6px;
-    bottom: 6px;
-    width: 2px;
-    background: linear-gradient(var(--accent), transparent);
-    opacity: 0.45;
+  .job__when span:last-child { color: var(--text-dim); }
+  .job__main h3 {
+    font-size: var(--step-2);
   }
-  .timeline__item {
+  .job__company {
+    margin-top: 0.35rem;
+    color: var(--accent);
+    font-family: var(--font-heading);
+    font-size: var(--step-1);
+  }
+  .job__points {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem 2.5rem;
+    margin-top: 1.6rem;
+  }
+  .job__points li {
     position: relative;
+    padding-left: 1.15rem;
+    color: var(--text-muted);
+    font-size: var(--step--1);
+    line-height: 1.55;
   }
-  .timeline__dot {
+  .job__points li::before {
+    content: '—';
     position: absolute;
-    left: -1.75rem;
-    top: 0.45rem;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: var(--bg);
-    border: 2px solid var(--accent);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent);
+    left: 0;
+    color: var(--accent);
   }
-  .timeline__card {
-    padding: var(--space-md);
-    border-radius: var(--radius);
-    border: var(--border-w) solid var(--border);
-    background: var(--bg-elev);
-    transition: border-color 0.25s var(--ease);
+
+  .volunteering {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border-strong);
   }
-  .timeline__card:hover {
-    border-color: var(--border-strong);
+  .volunteering__intro {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 1.5rem;
+    padding-bottom: var(--space-sm);
   }
-  .timeline__top {
+  .volunteering__intro h3 {
+    margin-top: 0.35rem;
+    font-size: var(--step-1);
+  }
+  .volunteering__intro p {
+    max-width: 48ch;
+    color: var(--text-muted);
+    font-size: 0.76rem;
+  }
+  .volunteering__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-block: 1px solid var(--border);
+  }
+  .volunteering__list > li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.9rem 1rem;
+  }
+  .volunteering__list > li + li { border-left: 1px solid var(--border); }
+  .volunteering__list strong {
+    font-family: var(--font-heading);
+    font-size: var(--step-1);
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  .volunteering__org {
+    color: var(--text-dim);
+    font-size: 0.74rem;
+  }
+  .volunteering__list li p {
+    max-width: 52ch;
+    padding-top: 0.35rem;
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    line-height: 1.45;
+  }
+  .volunteering__footer {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: baseline;
-    gap: 0.5rem;
-  }
-  .timeline__top h3 {
-    font-size: var(--step-1);
-  }
-  .timeline__at {
-    color: var(--accent);
-  }
-  .timeline__period {
-    font-family: var(--font-heading);
-    font-size: var(--step--1);
-    color: var(--text-muted);
-    white-space: nowrap;
-  }
-  .timeline__loc {
-    margin-top: 0.2rem;
-    color: var(--text-dim);
-    font-size: var(--step--1);
-  }
-  .timeline__points {
-    margin-top: var(--space-sm);
-    display: flex;
-    flex-direction: column;
-    gap: 0.55rem;
-  }
-  .timeline__points li {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0.6rem;
-    align-items: start;
-    color: var(--text-muted);
-    font-size: var(--step-0);
-  }
-  .timeline__points :global(svg) {
-    color: var(--accent);
-    margin-top: 0.28em;
-  }
-
-  .leadership {
-    margin-top: var(--space-lg);
-    padding: var(--space-md);
-    border-radius: var(--radius);
-    border: var(--border-w) dashed var(--border-strong);
-    background: var(--surface);
-  }
-  .leadership__title {
-    display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: var(--step-1);
+    gap: 0.5rem 1rem;
+    margin-top: auto;
+    padding-top: 0.65rem;
   }
-  .leadership__title :global(svg) {
+  .volunteering__period {
     color: var(--accent);
-  }
-  .leadership__blurb {
-    color: var(--text-muted);
-    font-size: var(--step--1);
-    margin-top: 0.4rem;
-  }
-  .leadership__list {
-    margin-top: var(--space-md);
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-    gap: var(--space-sm);
-  }
-  .leadership__list li {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    padding: var(--space-sm) var(--space-md);
-    border-radius: var(--radius-sm);
-    background: var(--bg-elev);
-    border: var(--border-w) solid var(--border);
-  }
-  .leadership__role {
-    font-family: var(--font-heading);
+    font-size: 0.72rem;
     font-weight: 600;
   }
-  .leadership__org {
-    color: var(--text-muted);
-    font-size: var(--step--1);
+  .volunteering__footer a {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text);
+    border-bottom: 1px solid var(--border-strong);
+    transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
   }
-  .leadership__period {
-    color: var(--text-dim);
-    font-size: var(--step--1);
+  .volunteering__footer a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
   }
-  .leadership__note {
-    margin-top: 0.4rem;
-    color: var(--text-muted);
-    font-size: var(--step--1);
+  @media (max-width: 760px) {
+    .job { grid-template-columns: 1fr; gap: 1.25rem; }
+    .job__points { grid-template-columns: 1fr; }
+    .volunteering__intro { align-items: start; flex-direction: column; gap: 0.5rem; }
+  }
+  @media (max-width: 620px) {
+    .volunteering__list { grid-template-columns: 1fr; }
+    .volunteering__list > li + li {
+      border-left: 0;
+      border-top: 1px solid var(--border);
+    }
   }
 </style>

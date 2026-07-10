@@ -28,32 +28,30 @@ import Icon from './Icon.astro';
 
 <style>
   .certs {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-    gap: var(--space-md);
+    max-width: 52rem;
+    margin-left: auto;
   }
   .cert {
     display: flex;
-    gap: var(--space-md);
-    padding: var(--space-md);
-    border-radius: var(--radius);
-    border: var(--border-w) solid var(--border-strong);
-    background: var(--bg-elev);
-    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    padding-block: var(--space-lg);
+    border-block: var(--border-w) solid var(--border-strong);
+    transition: transform 0.25s var(--ease);
   }
   .cert:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow);
+    transform: translateX(4px);
   }
   .cert__badge {
     flex: none;
     display: grid;
     place-items: center;
-    width: 3.4rem;
-    height: 3.4rem;
-    border-radius: 14px;
-    color: var(--accent-contrast);
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    transform: rotate(-7deg);
   }
   .cert__tag {
     display: inline-block;
@@ -66,7 +64,7 @@ import Icon from './Icon.astro';
     margin-bottom: 0.35rem;
   }
   .cert__body h3 {
-    font-size: var(--step-1);
+    font-size: var(--step-2);
   }
   .cert__issuer {
     color: var(--text-dim);
@@ -77,5 +75,9 @@ import Icon from './Icon.astro';
     margin-top: 0.6rem;
     color: var(--text-muted);
     font-size: var(--step-0);
+  }
+  @media (max-width: 520px) {
+    .cert { align-items: flex-start; }
+    .cert__badge { width: 3.5rem; height: 3.5rem; }
   }
 </style>
