@@ -92,7 +92,7 @@ export const site = {
   description:
     'Bent Jacobs - Software Developer specialising in Salesforce (Apex, LWC, Agentforce), full-stack engineering and AI-assisted development. Based in Brussels, BE from September 2026.',
   // Used for Open Graph / canonical. Combined with `base` at render time.
-  url: 'https://bentj-01.github.io/dev-portfolio',
+  url: 'https://bentj.be',
   ogImage: 'images/og-image.svg',
   locale: 'en',
   author: 'Bent Jacobs',
