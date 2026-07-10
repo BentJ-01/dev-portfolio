@@ -40,6 +40,8 @@ export interface LeadershipItem {
   period: string;
   /** Optional extra detail (e.g. a relevant technical contribution). */
   note?: string;
+  link?: string;
+  linkLabel?: string;
 }
 
 export interface Project {
@@ -102,7 +104,7 @@ export const hero = {
   title: 'Software Developer',
   subtitle: 'Salesforce · Full-stack · AI enthusiast',
   tagline:
-    'I turn business needs into clean, reliable software - building and automating on Salesforce, shipping full-stack products, and exploring what AI agents can do.',
+    'Building and automating on Salesforce, shipping full-stack products, and exploring what AI agents can do.',
   cta: {
     projects: { label: 'View projects', href: '#projects' },
     contact: { label: 'Get in touch', href: '#contact' },
@@ -114,12 +116,9 @@ export const hero = {
 };
 
 export const nav: NavLink[] = [
-  { label: 'About', href: '#about' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Experience', href: '#experience' },
   { label: 'Projects', href: '#projects' },
-  { label: 'Certifications', href: '#certifications' },
-  { label: 'Education', href: '#education' },
+  { label: 'Experience', href: '#experience' },
+  { label: 'About', href: '#about' },
   { label: 'Contact', href: '#contact' },
 ];
 
@@ -128,10 +127,8 @@ export const nav: NavLink[] = [
 export const about = {
   heading: 'About',
   paragraphs: [
-    'I’m a software developer who feels most at home on the frontend (Flutter, React/React Native, plain HTML/CSS/JS), backed by solid backend foundations built up during my studies and previous roles (Java, SQL, Apex, Progress OpenEdge).',
-    'Today I build and automate on Salesforce: Lightning Web Components, Apex, Visualforce and Flows, taking projects from analysis right through to deployment alongside a close-knit team and the clients we build for. I enjoy picking up new tools and frameworks, if there’s solid documentation, I’ll figure it out.',
-    'I’m genuinely curious about AI - I hold the Salesforce Agentforce Specialist certification (building AI agents) and I lean on AI-assisted development to ship better, faster.',
-    'I like the part of the job where a messy business problem turns into a clean, maintainable solution. Away from the keyboard you’ll usually find me out on the road bike, putting in the kilometres on the flat roads of the Kempen.',
+    'I’m a software developer who enjoys turning rough ideas into useful products.',
+    'Most days I work with Salesforce. Outside work, I build web and mobile projects or get out on my road bike with friends.',
   ],
 };
 
@@ -170,8 +167,9 @@ export const skills: SkillGroup[] = [
     items: [
       { name: 'REST APIs', level: 62 },
       { name: 'Python', level: 44 },
+      { name: 'Apex', level: 56 },
       { name: 'SQL', level: 42 },
-      { name: 'Progress OpenEdge', level: 31 },
+      { name: 'Java', level: 42 },
     ],
   },
   {
@@ -181,6 +179,9 @@ export const skills: SkillGroup[] = [
       { name: 'GitHub', level: 66 },
       { name: 'Azure DevOps', level: 64 },
       { name: 'n8n', level: 46 },
+      { name: 'Supabase', level: 46 },
+      { name: 'Vercel', level: 46 },
+      { name: 'Firebase', level: 68 },
     ],
   },
 ];
@@ -194,11 +195,8 @@ export const experience: ExperienceItem[] = [
     location: 'Turnhout',
     period: 'Apr 2025 – present',
     highlights: [
-      'Gather requirements directly from clients and translate them into Salesforce solutions, deciding together with the team which tools fit best - Apex, LWC, Flows, Visualforce, ...',
-      'Build those solutions end-to-end, from analysis through implementation to deployment.',
-      'Write custom Apex - invocable methods and triggers - for complex and performance-sensitive cases.',
-      'Integrate Salesforce with external systems such as Odoo and Business Central over REST APIs, and orchestrate flows between platforms with n8n.',
-      'Work in a small, close-knit team with strong, direct client contact throughout each project.',
+      'Build custom Salesforce solutions with Apex, LWC, Flow and Visualforce, from requirements to deployment.',
+      'Connect Salesforce with systems such as Odoo and Business Central through REST APIs and n8n.',
     ],
   },
   {
@@ -207,9 +205,8 @@ export const experience: ExperienceItem[] = [
     location: 'Wilrijk',
     period: 'Jun 2024 – Apr 2025',
     highlights: [
-      'Worked on a custom, in-house ERP system built in Progress OpenEdge that served as the base platform for multiple clients, each with their own customisations on top.',
-      'Maintained and extended the shared platform, handling tickets and feature work across the client base.',
-      'Built bespoke modules and per-client adjustments on top of the base system as a junior contributor.',
+      'Maintained and extended a Progress OpenEdge ERP platform used by multiple clients.',
+      'Built new modules and client-specific features on top of the shared product.',
     ],
   },
   {
@@ -218,13 +215,21 @@ export const experience: ExperienceItem[] = [
     location: 'Leuven',
     period: 'Mar 2023 – Jun 2023',
     highlights: [
-      'Evaluated frontend frameworks (React / React Native and Flutter) and built the core components.',
-      'Delivered the app design in Flutter / Dart.',
+      'Evaluated React Native and Flutter, then delivered the app interface in Flutter.',
     ],
   },
 ];
 
 export const leadership: LeadershipItem[] = [
+  {
+    role: 'Organiser',
+    org: 'NOKOUT Festival',
+    location: 'Vosselaar',
+    period: '2025 – present',
+    note: 'Started with a few friends from Jeugdhuis De Nok. Preparations began in 2025, with the first edition planned for September 2026 and the aim of making it an annual festival.',
+    link: 'https://www.nokout.be',
+    linkLabel: 'Visit nokout.be',
+  },
   {
     role: 'Head of board',
     org: 'Jeugdhuis De Nok',
@@ -255,6 +260,21 @@ export const projects: Project[] = [
     tags: ['HTML', 'CSS', 'JavaScript', 'Social media'],
     thumbnail: 'images/nokout/noimage.png',
   },
+    {
+    title: 'Flare',
+    description:
+      'A festival regroup app born from years of attending festivals and losing my friends on the festival ground: create a group, share a 6-character code, and when someone gets lost they hit the FLARE button - it pings the whole crew and opens live location sharing for 15 minutes. No always-on tracking, a dark minimal UI, and built to survive a saturated festival network and a dying battery. Flutter on top of Supabase Realtime, with Google Maps and push notifications.',
+    link: 'https://github.com/BentJ-01/flare',
+    linkLabel: 'View repo',
+    tags: ['Flutter', 'Dart', 'Supabase', 'Google Maps'],
+    mockup: true,
+    thumbnail: 'images/flare/flarebanner.png',
+    screenshots: [
+      'images/flare/flare1.png',
+      'images/flare/flare2.png',
+      'images/flare/flare3.png',
+    ],
+  },
   {
     title: 'Slipstream',
     description:
@@ -271,27 +291,26 @@ export const projects: Project[] = [
     ],
   },
   {
+    title: 'Segment Hunter',
+    description:
+      'A personal Flutter app that tracks Strava segment PRs and flags which ones are close to being beaten - essentially rebuilding a Strava Premium feature for free. Built for personal use, shared with a few friends who ride as well.',
+    link: 'https://github.com/BentJ-01/segment-hunter',
+    linkLabel: 'View repo',
+    tags: ['Flutter', 'Dart', 'Supabase', 'Strava API'],
+    mockup: true,
+    screenshots: [
+      'images/segmenthunter/sh1.png',
+      'images/segmenthunter/sh2.png',
+      'images/segmenthunter/sh3.png',
+    ],
+  },
+  {
     title: 'NoteTaker',
     description:
       'An internal tool I built at Ittes for Salesforce development meetings: jot down requirements and meeting notes in shorthand per feature while the conversation happens, let Claude expand them into full prose, and assemble everything into standardized documentation with Word export - so the write-up is done minutes after the meeting, not days later.',
     link: 'https://github.com/BentJ-01/notetaker',
     linkLabel: 'View repo',
     tags: ['Next.js', 'TypeScript', 'Supabase', 'Claude API'],
-  },
-  {
-    title: 'Flare',
-    description:
-      'A festival regroup app born from years of attending festivals and losing my friends on the festival ground: create a group, share a 6-character code, and when someone gets lost they hit the FLARE button - it pings the whole crew and opens live location sharing for 15 minutes. No always-on tracking, a dark minimal UI, and built to survive a saturated festival network and a dying battery. Flutter on top of Supabase Realtime, with Google Maps and push notifications.',
-    link: 'https://github.com/BentJ-01/flare',
-    linkLabel: 'View repo',
-    tags: ['Flutter', 'Dart', 'Supabase', 'Google Maps'],
-    mockup: true,
-    thumbnail: 'images/flare/flarebanner.png',
-    screenshots: [
-      'images/flare/flare1.png',
-      'images/flare/flare2.png',
-      'images/flare/flare3.png',
-    ],
   },
   {
     title: 'This portfolio',
@@ -309,20 +328,6 @@ export const projects: Project[] = [
     linkLabel: 'Visit site',
     tags: ['HTML', 'CSS', 'JavaScript', 'SEO'],
     thumbnail: 'images/woest/woestbanner.png',
-  },
-  {
-    title: 'Segment Hunter',
-    description:
-      'A personal Flutter app that tracks Strava segment PRs and flags which ones are close to being beaten - essentially rebuilding a Strava Premium feature for free. Built for personal use, shared with a few friends who ride as well.',
-    link: 'https://github.com/BentJ-01/segment-hunter',
-    linkLabel: 'View repo',
-    tags: ['Flutter', 'Dart', 'Supabase', 'Strava API'],
-    mockup: true,
-    screenshots: [
-      'images/segmenthunter/sh1.png',
-      'images/segmenthunter/sh2.png',
-      'images/segmenthunter/sh3.png',
-    ],
   },
 ];
 

@@ -11,12 +11,22 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
   <div class="container">
     <SectionHeading eyebrow="Selected work" title="Projects" id="projects-title" />
 
-    <p class="projects__note" data-reveal>
-      <Icon name="spark" size={15} />
-      Click any card for the full story, tech stack and links.
-    </p>
+    <div class="projects__toolbar" data-reveal>
+      <p class="projects__note">
+        <Icon name="spark" size={15} />
+        Click any card for the full story, tech stack and links.
+      </p>
+      <div class="carousel__controls" aria-label="Project carousel controls">
+        <button type="button" data-carousel-prev aria-label="Previous projects">
+          <Icon name="arrow-left" size={17} />
+        </button>
+        <button type="button" data-carousel-next aria-label="Next projects">
+          <Icon name="arrow-right" size={17} />
+        </button>
+      </div>
+    </div>
 
-    <div class="projects">
+    <div class="projects" data-project-carousel>
       {projects.map((project, i) => {
         const modalId = `project-modal-${i}`;
         const thumb = project.thumbnail ?? project.screenshots?.[0];
@@ -39,6 +49,7 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
                 </span>
               )}
               {project.featured && <span class="card__badge">Featured</span>}
+              <span class="card__index">0{i + 1}</span>
             </span>
 
             <span class="card__body">
@@ -133,47 +144,91 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
 </section>
 
 <style>
+  .projects__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    margin-top: calc(-1 * var(--space-md));
+    margin-bottom: var(--space-md);
+  }
   .projects__note {
     display: flex;
     align-items: center;
     gap: 0.45rem;
-    margin-top: calc(-1 * var(--space-md));
-    margin-bottom: var(--space-md);
-    font-family: var(--font-heading);
     font-size: var(--step--1);
     color: var(--text-dim);
   }
   .projects__note :global(svg) {
+    flex: none;
     color: var(--accent);
+  }
+  .carousel__controls {
+    display: flex;
+    gap: 0.5rem;
     flex: none;
   }
-
-  .projects {
+  .carousel__controls button {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
-    gap: var(--space-sm);
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: var(--border-w) solid var(--border-strong);
+    border-radius: 50%;
+    background: var(--bg-elev);
+    color: var(--text);
+    cursor: pointer;
+    transition: color 0.2s var(--ease), border-color 0.2s var(--ease),
+      opacity 0.2s var(--ease), transform 0.2s var(--ease);
+  }
+  .carousel__controls button:hover:not(:disabled) {
+    color: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .carousel__controls button:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+  .projects {
+    display: flex;
+    gap: 1rem;
+    padding: 0.2rem 0.15rem 1rem;
+    margin-inline: -0.15rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    overscroll-behavior-inline: contain;
+  }
+  .projects::-webkit-scrollbar {
+    display: none;
   }
 
   /* ── Compact card ─────────────────────────────────────────────────────── */
   .card {
+    flex: 0 0 calc((100% - 2rem) / 3);
+    min-width: 0;
+    scroll-snap-align: start;
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
-    padding: 0.6rem 0.6rem 0.8rem;
+    gap: 0.85rem;
+    padding: 0.75rem 0.75rem 1rem;
     font: inherit;
     text-align: left;
     color: inherit;
-    border-radius: var(--radius);
     border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
     background: var(--bg-elev);
     cursor: pointer;
-    transition: border-color 0.25s var(--ease), transform 0.25s var(--ease),
+    transition: transform 0.25s var(--ease), border-color 0.25s var(--ease),
       box-shadow 0.25s var(--ease);
   }
   .card:hover {
-    border-color: var(--accent);
-    transform: translateY(-4px);
+    transform: translateY(-3px);
+    border-color: var(--border-strong);
     box-shadow: var(--shadow);
   }
 
@@ -181,7 +236,7 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
     position: relative;
     display: grid;
     place-items: center;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 16 / 11;
     border-radius: calc(var(--radius) - 5px);
     border: var(--border-w) solid var(--border);
     background: var(--bg-elev-2);
@@ -195,18 +250,29 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
     transition: transform 0.35s var(--ease);
   }
   .card:hover .card__thumb img {
-    transform: scale(1.04);
+    transform: scale(1.025);
   }
   .card__monogram {
     font-family: var(--font-heading);
-    font-size: 2.8rem;
-    font-weight: 600;
+    font-size: clamp(4rem, 8vw, 7rem);
+    font-weight: 400;
     line-height: 1;
-    background: linear-gradient(120deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    opacity: 0.85;
+    color: var(--accent);
+    opacity: 0.7;
+  }
+
+  .card__index {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.7rem;
+    padding: 0.2rem 0.45rem;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: #fff;
+    background: rgba(30, 29, 26, 0.72);
   }
 
   .card__badge {
@@ -218,32 +284,33 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
     letter-spacing: 0.08em;
     text-transform: uppercase;
     padding: 0.22rem 0.55rem;
-    border-radius: 999px;
+    border-radius: 5px;
     color: var(--accent-contrast);
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    background: var(--accent);
   }
 
   .card__body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.28rem;
-    padding-inline: 0.3rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.35rem 1rem;
+    padding: 0.2rem 0.3rem 0;
   }
   .card__title {
     font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: var(--step-0);
-    letter-spacing: -0.01em;
+    font-weight: 500;
+    font-size: var(--step-1);
+    letter-spacing: -0.02em;
   }
   .card__stack {
-    font-family: var(--font-heading);
-    font-size: 0.68rem;
+    align-self: center;
+    font-size: 0.66rem;
     font-weight: 500;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.09em;
     text-transform: uppercase;
     color: var(--text-dim);
   }
   .card__teaser {
+    grid-column: 1 / -1;
     color: var(--text-muted);
     font-size: var(--step--1);
     line-height: 1.5;
@@ -254,13 +321,12 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
   }
 
   .card__hint {
-    margin-top: auto;
-    padding-inline: 0.3rem;
+    margin-top: -0.3rem;
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
     font-family: var(--font-heading);
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -369,9 +435,9 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
     letter-spacing: 0.08em;
     text-transform: uppercase;
     padding: 0.25rem 0.6rem;
-    border-radius: 999px;
+    border-radius: 5px;
     color: var(--accent-contrast);
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    background: var(--accent);
   }
   .pmodal__desc {
     color: var(--text-muted);
@@ -389,7 +455,7 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
     letter-spacing: 0.04em;
     text-transform: uppercase;
     padding: 0.28rem 0.6rem;
-    border-radius: 999px;
+    border-radius: 5px;
     border: var(--border-w) solid var(--border);
     color: var(--text-muted);
     transition: border-color 0.2s var(--ease), color 0.2s var(--ease);
@@ -515,7 +581,22 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
     color: var(--text-dim);
   }
 
+  @media (max-width: 900px) {
+    .card {
+      flex-basis: calc((100% - 1rem) / 2);
+    }
+  }
+
   @media (max-width: 600px) {
+    .projects__toolbar {
+      align-items: flex-end;
+    }
+    .projects__note {
+      max-width: 25ch;
+    }
+    .card {
+      flex-basis: min(84vw, 20rem);
+    }
     .pmodal__inner {
       padding: var(--space-md);
     }
@@ -541,6 +622,37 @@ const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//
 </style>
 
 <script>
+  const carousel = document.querySelector<HTMLElement>('[data-project-carousel]');
+  const previousButton = document.querySelector<HTMLButtonElement>('[data-carousel-prev]');
+  const nextButton = document.querySelector<HTMLButtonElement>('[data-carousel-next]');
+
+  if (carousel && previousButton && nextButton) {
+    const updateCarouselControls = () => {
+      const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+      previousButton.disabled = carousel.scrollLeft <= 2;
+      nextButton.disabled = carousel.scrollLeft >= maxScroll - 2;
+    };
+
+    const moveCarousel = (direction: -1 | 1) => {
+      const firstCard = carousel.querySelector<HTMLElement>('.card');
+      if (!firstCard) return;
+
+      const gap = Number.parseFloat(getComputedStyle(carousel).gap) || 0;
+      const distance = firstCard.getBoundingClientRect().width + gap;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      carousel.scrollBy({
+        left: distance * direction,
+        behavior: reduceMotion ? 'auto' : 'smooth',
+      });
+    };
+
+    previousButton.addEventListener('click', () => moveCarousel(-1));
+    nextButton.addEventListener('click', () => moveCarousel(1));
+    carousel.addEventListener('scroll', updateCarouselControls, { passive: true });
+    window.addEventListener('resize', updateCarouselControls, { passive: true });
+    updateCarouselControls();
+  }
+
   // Each project card opens its matching <dialog>; native dialog handles
   // Esc, focus containment and returning focus to the card on close.
   document.querySelectorAll<HTMLButtonElement>('[data-modal-target]').forEach((card) => {

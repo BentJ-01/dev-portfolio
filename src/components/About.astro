@@ -3,25 +3,40 @@ import { about } from '../data/portfolio';
 import SectionHeading from './SectionHeading.astro';
 ---
 
-<section class="section" id="about" aria-labelledby="about-title">
+<section class="section about-section" id="about" aria-labelledby="about-title">
   <div class="container about">
     <SectionHeading eyebrow="Who I am" title={about.heading} id="about-title" />
-    <div class="about__body" data-reveal>
-      {about.paragraphs.map((p) => <p set:html={p} />)}
+
+    <div class="about__copy" data-reveal style="--reveal-delay: 70ms">
+      {about.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
     </div>
   </div>
 </section>
 
 <style>
-  .about__body {
-    max-width: 62ch;
+  .about-section {
+    background: var(--bg-elev-2);
+  }
+  .about-section::before { display: none; }
+  .about {
+    display: grid;
+    grid-template-columns: minmax(15rem, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2.5rem, 9vw, 8rem);
+    align-items: start;
+  }
+  .about__copy {
+    max-width: 36rem;
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
-    font-size: var(--step-1);
-    color: var(--text-muted);
+    gap: 0.85rem;
   }
-  .about__body :global(p:first-child) {
-    color: var(--text);
+  .about__copy p {
+    color: var(--text-muted);
+    font-size: var(--step-1);
+    line-height: 1.55;
+  }
+  .about__copy p:first-child { color: var(--text); }
+  @media (max-width: 700px) {
+    .about { grid-template-columns: 1fr; gap: 2rem; }
   }
 </style>

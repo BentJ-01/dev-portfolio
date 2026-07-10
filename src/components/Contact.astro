@@ -43,7 +43,7 @@ import Icon from './Icon.astro';
   .contact {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: clamp(2rem, 5vw, 4rem);
+    gap: clamp(3rem, 10vw, 8rem);
     align-items: start;
   }
   .contact__intro .lead {
@@ -51,27 +51,26 @@ import Icon from './Icon.astro';
   }
   .contact__primary {
     margin-top: var(--space-md);
-    /* The one true "take action" button on the page gets the action color. */
-    --btn-bg: var(--accent-2);
+    --btn-bg: #282721;
+    --btn-fg: #fff8ed;
   }
   .contact__links {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0;
   }
   .contact__links a {
     display: flex;
     align-items: center;
     gap: var(--space-md);
-    padding: var(--space-sm) var(--space-md);
-    border-radius: var(--radius);
-    border: var(--border-w) solid var(--border);
-    background: var(--bg-elev);
-    transition: border-color 0.2s var(--ease), transform 0.2s var(--ease);
+    padding: 1.15rem 0;
+    border-radius: 0;
+    border-bottom: var(--border-w) solid currentColor;
+    background: transparent;
+    transition: transform 0.2s var(--ease);
   }
   .contact__links a:hover {
-    border-color: var(--accent);
-    transform: translateX(3px);
+    transform: translateX(5px);
   }
   .contact__icon {
     display: grid;
@@ -79,9 +78,8 @@ import Icon from './Icon.astro';
     width: 2.6rem;
     height: 2.6rem;
     flex: none;
-    border-radius: var(--radius-sm);
-    background: var(--surface);
-    color: var(--accent);
+    border-radius: 50%;
+    border: 1px solid currentColor;
   }
   .contact__text {
     display: flex;
@@ -90,21 +88,21 @@ import Icon from './Icon.astro';
   }
   .contact__label {
     font-size: var(--step--1);
-    color: var(--text-dim);
+    opacity: 0.65;
   }
   .contact__value {
     font-family: var(--font-heading);
     font-weight: 500;
-    color: var(--text);
+    color: inherit;
     overflow-wrap: anywhere;
   }
   .contact__chev {
     margin-left: auto;
-    color: var(--text-dim);
+    opacity: 0.6;
     transition: color 0.2s var(--ease), transform 0.2s var(--ease);
   }
   .contact__links a:hover .contact__chev {
-    color: var(--accent);
+    color: inherit;
     transform: translate(2px, -2px);
   }
 
@@ -113,4 +111,11 @@ import Icon from './Icon.astro';
       grid-template-columns: 1fr;
     }
   }
+  :global(#contact) {
+    color: #fff8ed;
+    background: #ad553f;
+  }
+  :global(#contact)::before { display: none; }
+  :global(#contact .eyebrow) { color: #f5d5a3; }
+  :global(#contact .lead) { color: rgba(255, 248, 237, 0.78); }
 </style>
