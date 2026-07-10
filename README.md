@@ -12,7 +12,7 @@
 - Build the site: `npm run build`
 - Preview the build: `npm run preview`
 
-Local URL: `http://localhost:4321/dev-portfolio/`
+Local URL: `http://localhost:4321/`
 
 ## Edit the site
 

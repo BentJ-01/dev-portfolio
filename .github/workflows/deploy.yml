@@ -1,19 +1,15 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Run on pushes to the default branch.
   push:
     branches: [main]
-  # Allow manual runs from the Actions tab.
   workflow_dispatch:
 
-# Allow this job to deploy to GitHub Pages.
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow one concurrent deployment; don't cancel in-progress production deploys.
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -25,10 +21,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build with Astro
-        uses: withastro/action@v4
-        # The official action installs deps, builds, and uploads the Pages artifact.
-        # It auto-detects the package manager and the `dist/` output directory.
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload dist artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./dist
 
   deploy:
     needs: build
