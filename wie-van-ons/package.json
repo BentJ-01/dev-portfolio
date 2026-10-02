@@ -1,0 +1,19 @@
+{
+  "name": "wie-van-ons",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Wie van ons? — drankspel voor het scoutsweekend.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.2",
+    "qrcode-generator": "^2.0.4"
+  },
+  "devDependencies": {
+    "vite": "^7.3.6"
+  }
+}

@@ -24,14 +24,28 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            wie-van-ons/package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build site
         run: npm run build
+
+      - name: Build "Wie van ons?"
+        working-directory: wie-van-ons
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          npm ci
+          npm run build
+          mkdir -p ../dist/wie-van-ons
+          cp -r dist/. ../dist/wie-van-ons/
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
