@@ -54,9 +54,9 @@ supabase functions deploy upload_avatar --no-verify-jwt
 
 De functie valideert zelf het speler-token, het bestandstype (JPEG/PNG/WebP) en de grootte (max. 1 MB). `SUPABASE_URL` en `SUPABASE_SERVICE_ROLE_KEY` zijn automatisch beschikbaar in Edge Functions.
 
-### 5. GitHub-secrets
+### 5. GitHub-secrets (optioneel)
 
-In de repo: **Settings → Secrets and variables → Actions → New repository secret**:
+De workflow bevat de URL en anon key van het huidige project als terugvalwaarde. Voor een ander project zet je in de repo: **Settings → Secrets and variables → Actions → New repository secret**:
 
 | Secret | Waarde |
 | --- | --- |

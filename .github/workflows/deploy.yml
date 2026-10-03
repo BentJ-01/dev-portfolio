@@ -38,9 +38,10 @@ jobs:
 
       - name: Build "Wie van ons?"
         working-directory: wie-van-ons
+        # Publieke waarden (ze belanden toch in de frontend); repo-secrets overschrijven ze.
         env:
-          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://msthvtrwwddjeouznnhx.supabase.co' }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1zdGh2dHJ3d2RkamVvdXpubmh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5NzAyOTIsImV4cCI6MjEwNjU0NjI5Mn0.OhSLVTXZE7ddhAD5lD-QFYGDc6VpNpI3jygOw8xgyA0' }}
         run: |
           npm ci
           npm run build
