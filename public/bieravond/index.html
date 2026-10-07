@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Bieravond Scouts Vosselaar</title>
+  <meta name="description" content="Het digitale bierboekje van de bieravond van Scouts Vosselaar — meer dan 60 bieren." />
+  <meta name="theme-color" content="#2a1a10" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --red: #c4161c;
+      --blue: #1d6fb8;
+      --green: #2e9b3a;
+      --gold: #e6b325;
+      --ink: #1f1a17;
+      --muted: #6b5f55;
+      --paper: #fffdf8;
+      --wood: #3a2414;
+      --bar-h: 56px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      font-family: "Source Sans 3", system-ui, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(120% 80% at 50% 0%, #4a2e1a 0%, #24160d 60%, #160d07 100%);
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+    button { font: inherit; color: inherit; cursor: pointer; }
+
+    /* ---------- Top & bottom bars ---------- */
+    .topbar, .bottombar {
+      position: fixed; left: 0; right: 0; z-index: 10;
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 16px; height: var(--bar-h); color: #f5e7cf;
+    }
+    .topbar { top: 0; padding-top: env(safe-area-inset-top); height: calc(var(--bar-h) + env(safe-area-inset-top)); }
+    .bottombar { bottom: 0; padding-bottom: env(safe-area-inset-bottom); height: calc(var(--bar-h) + env(safe-area-inset-bottom)); justify-content: center; }
+    .brand { font-family: Oswald, sans-serif; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; font-size: 18px; }
+    .brand small { display: block; font-family: "Source Sans 3", sans-serif; font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 12px; opacity: .7; margin-top: -2px; }
+    .spacer { flex: 1; }
+    .icon-btn {
+      width: 44px; height: 44px; border-radius: 50%; border: 0;
+      background: rgba(255,255,255,.1); display: grid; place-items: center;
+      transition: background .2s;
+    }
+    .icon-btn:hover { background: rgba(255,255,255,.18); }
+    .icon-btn:disabled { opacity: .3; cursor: default; }
+    .icon-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .search-btn { width: auto; border-radius: 22px; padding: 0 16px 0 12px; display: flex; gap: 8px; align-items: center; }
+    .pager { min-width: 92px; text-align: center; font-family: Oswald, sans-serif; font-size: 15px; letter-spacing: .05em; }
+    .progress { position: absolute; left: 16px; right: 16px; top: 0; height: 3px; background: rgba(255,255,255,.12); border-radius: 2px; overflow: hidden; }
+    .progress i { display: block; height: 100%; width: 0; background: var(--gold); transition: width .25s; }
+
+    /* ---------- Book ---------- */
+    .book {
+      position: fixed; left: 0; right: 0;
+      top: calc(var(--bar-h) + env(safe-area-inset-top));
+      bottom: calc(var(--bar-h) + env(safe-area-inset-bottom));
+      display: flex; overflow-x: auto; overflow-y: hidden;
+      scroll-snap-type: x mandatory; scrollbar-width: none;
+      overscroll-behavior-x: contain;
+    }
+    .book::-webkit-scrollbar { display: none; }
+    .page {
+      flex: 0 0 100%; height: 100%; scroll-snap-align: center; scroll-snap-stop: always;
+      display: grid; place-items: center; padding: 8px 16px 12px;
+      perspective: 1600px;
+    }
+    .sheet {
+      position: relative; width: 100%; max-width: 440px; height: 100%; max-height: 820px;
+      border-radius: 6px 14px 14px 6px; overflow: hidden;
+      background: var(--paper);
+      box-shadow: 0 18px 40px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.3);
+      will-change: transform;
+    }
+    /* booklet spine + stacked page edges */
+    .sheet::before {
+      content: ""; position: absolute; inset: 0 auto 0 0; width: 18px; z-index: 3; pointer-events: none;
+      background: linear-gradient(90deg, rgba(0,0,0,.22), rgba(0,0,0,.06) 45%, transparent);
+    }
+    .sheet::after {
+      content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none;
+      background: linear-gradient(90deg, rgba(0,0,0,.35), transparent 70%);
+      opacity: var(--shade, 0);
+    }
+
+    /* ---------- Beer page ---------- */
+    .beer .sheet {
+      display: flex; flex-direction: column;
+      background:
+        linear-gradient(180deg, var(--paper) 0%, var(--paper) 44%, #fff3c4 60%, #f3c95a 70%, transparent 70.1%),
+        repeating-linear-gradient(178deg, rgba(0,0,0,.08) 0 2px, transparent 2px 9px),
+        linear-gradient(180deg, #6b4022 70%, #4a2b16 85%, #2d1a0d 100%);
+    }
+    .beer .scroll { flex: 1; overflow-y: auto; display: flex; flex-direction: column; padding: 22px 22px 0 30px; }
+    .beer h2 {
+      font-family: Oswald, sans-serif; font-weight: 600; text-transform: uppercase;
+      font-size: clamp(26px, 7.5vw, 34px); line-height: 1.02; margin: 0 0 10px; color: var(--red);
+    }
+    .beer.nonalc h2 { color: var(--blue); }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .tag {
+      font-family: Oswald, sans-serif; font-weight: 500; font-size: 13px; letter-spacing: .04em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 3px; color: #fff; background: var(--green);
+    }
+    .tag.trap { background: #4a2d1e; }
+    .tag.na { background: var(--blue); }
+    .tekst { margin: 0; font-size: 15.5px; line-height: 1.45; color: #2c2622; }
+    .stage { position: relative; flex: 1 0 230px; display: flex; align-items: flex-end; justify-content: center; margin: 10px -22px 0 -30px; padding-bottom: 64px; }
+    .stage img {
+      height: min(36vh, 300px); width: auto; max-width: 70%; object-fit: contain;
+      filter: drop-shadow(10px 14px 10px rgba(0,0,0,.45));
+      position: relative; z-index: 1;
+    }
+    .nr {
+      position: absolute; left: 30px; bottom: 76px; z-index: 2;
+      width: 44px; height: 44px; border-radius: 50%; border: 2.5px solid #fff;
+      display: grid; place-items: center; color: #fff;
+      font-family: Oswald, sans-serif; font-weight: 700; font-size: 19px;
+      background: rgba(0,0,0,.25);
+    }
+    .abv {
+      position: absolute; left: 30px; right: 22%; bottom: 18px; z-index: 2;
+      font-family: Oswald, sans-serif; font-weight: 600; font-size: 22px; color: #1f1a17;
+      padding: 4px 14px; background: linear-gradient(90deg, var(--gold), #f3d36b 60%, rgba(243,211,107,0));
+    }
+    .abv small { font-weight: 500; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; opacity: .7; margin-left: 8px; }
+
+    /* ---------- Cover / back / wine / contents ---------- */
+    .cover .sheet, .back .sheet { background: #2a1a10; display: flex; flex-direction: column; }
+    .cover .art, .back .art { flex: 1; background-size: cover; background-position: 32% center; }
+    .back .art { background-position: center; background-size: contain; background-repeat: no-repeat; background-color: #3a2414; }
+    .cover .foot { padding: 18px 22px 22px 30px; color: #f5e7cf; background: linear-gradient(180deg, #2a1a10, #1a0f08); }
+    .cover h1 { font-family: Oswald, sans-serif; font-size: 30px; margin: 0; text-transform: uppercase; letter-spacing: .02em; }
+    .cover p { margin: 4px 0 0; opacity: .8; }
+    .hint { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 14px; color: var(--gold); animation: nudge 1.6s ease-in-out infinite; }
+    @keyframes nudge { 50% { transform: translateX(6px); } }
+
+    .plain .scroll { height: 100%; overflow-y: auto; padding: 26px 22px 26px 34px; }
+    .plain h2 { font-family: Oswald, sans-serif; text-transform: uppercase; font-size: 30px; margin: 0 0 4px; color: var(--red); }
+    .plain .sub { color: var(--muted); margin: 0 0 18px; }
+    .toc { list-style: none; padding: 0; margin: 0; columns: 2; column-gap: 16px; }
+    .toc li { break-inside: avoid; }
+    .toc button {
+      width: 100%; text-align: left; border: 0; background: none; padding: 5px 0;
+      display: flex; gap: 8px; align-items: baseline; font-size: 14.5px; line-height: 1.2;
+    }
+    .toc button:hover span:last-child { color: var(--red); }
+    .toc .n { font-family: Oswald, sans-serif; font-weight: 600; color: var(--muted); min-width: 22px; }
+    .toc .na { color: var(--blue); }
+
+    .wine .sheet { background: linear-gradient(180deg, var(--paper) 0%, #fbf3e3 100%); }
+    .wine h2 { color: #8a1538; }
+    .wine h3 { font-family: Oswald, sans-serif; font-weight: 600; text-transform: uppercase; color: #b8860b; font-size: 24px; line-height: 1.05; margin: 22px 0 8px; }
+    .wine .glass { width: 120px; margin: 26px auto 0; display: block; opacity: .9; }
+
+    /* ---------- Search sheet ---------- */
+    .search {
+      position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column;
+      background: rgba(22,13,7,.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      opacity: 0; pointer-events: none; transition: opacity .2s;
+    }
+    .search.open { opacity: 1; pointer-events: auto; }
+    .panel {
+      margin: calc(10px + env(safe-area-inset-top)) auto 0; width: calc(100% - 20px); max-width: 520px;
+      max-height: calc(100% - 20px - env(safe-area-inset-top)); display: flex; flex-direction: column;
+      background: var(--paper); border-radius: 16px; overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,.5);
+      transform: translateY(-12px); transition: transform .2s;
+    }
+    .search.open .panel { transform: none; }
+    .field { display: flex; align-items: center; gap: 10px; padding: 12px 12px 12px 16px; border-bottom: 1px solid #eee3d3; }
+    .field svg { width: 20px; height: 20px; stroke: var(--muted); fill: none; stroke-width: 2; flex: none; }
+    .field input { flex: 1; border: 0; outline: 0; background: none; font: inherit; font-size: 17px; color: var(--ink); min-width: 0; }
+    .field .close { border: 0; background: #f1e8da; border-radius: 18px; padding: 7px 12px; font-size: 14px; }
+    .chips { display: flex; gap: 6px; padding: 10px 16px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid #eee3d3; }
+    .chip { flex: none; border: 1px solid #e3d6c3; background: #fff; border-radius: 16px; padding: 5px 12px; font-size: 14px; }
+    .chip[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .results { list-style: none; margin: 0; padding: 4px 0; overflow-y: auto; }
+    .results button {
+      width: 100%; border: 0; background: none; text-align: left; padding: 8px 16px;
+      display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center;
+    }
+    .results button:hover, .results button:focus-visible { background: #f6efe3; outline: 0; }
+    .results img { width: 34px; height: 52px; object-fit: contain; }
+    .results .ph { width: 34px; height: 52px; display: grid; place-items: center; font-size: 22px; }
+    .results strong { display: block; font-weight: 600; font-size: 16px; }
+    .results .meta { font-size: 13px; color: var(--muted); }
+    .results .pct { font-family: Oswald, sans-serif; font-weight: 600; color: var(--ink); }
+    .results mark { background: #ffe58a; color: inherit; border-radius: 2px; }
+    .empty { padding: 28px 16px; text-align: center; color: var(--muted); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hint { animation: none; }
+      .sheet { transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Bieravond<small>Scouts Vosselaar · 8 november 2025</small></div>
+    <div class="spacer"></div>
+    <button class="icon-btn search-btn" id="openSearch" aria-label="Zoek een bier">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      Zoeken
+    </button>
+  </header>
+
+  <main class="book" id="book" aria-live="polite"></main>
+
+  <nav class="bottombar">
+    <div class="progress"><i id="progress"></i></div>
+    <button class="icon-btn" id="prev" aria-label="Vorige pagina"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+    <div class="pager" id="pager">1 / 1</div>
+    <button class="icon-btn" id="next" aria-label="Volgende pagina"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
+  </nav>
+
+  <div class="search" id="search" role="dialog" aria-modal="true" aria-label="Zoeken">
+    <div class="panel">
+      <div class="field">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Naam, nummer of smaak…" autocomplete="off" enterkeyhint="search" />
+        <button class="close" id="closeSearch">Sluiten</button>
+      </div>
+      <div class="chips" id="chips">
+        <button class="chip" data-f="vat" aria-pressed="false">Van 't vat</button>
+        <button class="chip" data-f="nonalc" aria-pressed="false">Alcoholvrij</button>
+        <button class="chip" data-f="trappist" aria-pressed="false">Trappist</button>
+        <button class="chip" data-f="sterk" aria-pressed="false">Sterk (8 %+)</button>
+        <button class="chip" data-f="wijn" aria-pressed="false">Wijn</button>
+      </div>
+      <ul class="results" id="results"></ul>
+    </div>
+  </div>
+
+  <script src="bieren.js"></script>
+  <script>
+    const book = document.getElementById('book');
+    const items = window.BIEREN;
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[’‘]/g, "'");
+    const img = b => `img/bieren/${String(b.nr).padStart(2, '0')}.webp`;
+    const abvNum = b => parseFloat(String(b.abv || '0').replace(',', '.'));
+    const isNonAlc = b => b.type === 'alcoholvrij';
+    const glassSvg = `<svg class="glass" viewBox="0 0 100 160" aria-hidden="true"><path d="M22 8h56c2 30-6 52-28 56C28 60 20 38 22 8Z" fill="#f1d36a" stroke="#8a6d1a" stroke-width="3"/><path d="M22 8h56l-1 14H23Z" fill="#fff" opacity=".7"/><path d="M50 64v70M30 150h40" stroke="#8a6d1a" stroke-width="4" stroke-linecap="round"/></svg>`;
+
+    // ---------- Build pages ----------
+    const pages = []; // { el, key }
+    const pageOf = {}; // item nr -> page index
+    function addPage(cls, html, key) {
+      const el = document.createElement('section');
+      el.className = 'page ' + cls;
+      el.innerHTML = `<div class="sheet">${html}</div>`;
+      book.appendChild(el);
+      pages.push({ el, key });
+      return pages.length - 1;
+    }
+
+    addPage('cover', `
+      <div class="art" style="background-image:url(img/cover.webp)" role="img" aria-label="Bieravond — proef meer dan 60 bieren"></div>
+      <div class="foot">
+        <h1>Het bierboekje</h1>
+        <p>${items.filter(b => b.type !== 'wijn').length} bieren · ${items.filter(isNonAlc).length} alcoholvrij · 2 wijnen</p>
+        <div class="hint">Swipe om te bladeren →</div>
+      </div>`, 'cover');
+
+    const tocIdx = addPage('plain toc-page', `<div class="scroll">
+      <h2>Inhoud</h2><p class="sub">Tik op een bier om ernaartoe te bladeren.</p>
+      <ul class="toc" id="toc"></ul></div>`, 'inhoud');
+
+    let wineDone = false;
+    for (const b of items) {
+      if (b.type === 'wijn') {
+        if (wineDone) continue;
+        wineDone = true;
+        const wines = items.filter(w => w.type === 'wijn');
+        const i = addPage('plain wine', `<div class="scroll">
+          <h2>Ook te proeven</h2><p class="sub">Liever een glaasje wijn?</p>
+          ${wines.map(w => `<h3>${esc(w.naam)}</h3><p class="tekst">${esc(w.tekst)}</p>`).join('')}
+          ${glassSvg}</div>`, 'wijn');
+        wines.forEach(w => pageOf[w.nr] = i);
+        continue;
+      }
+      const tags = [
+        b.vat && `<span class="tag">Van 't vat</span>`,
+        b.trappist && `<span class="tag trap">Trappist</span>`,
+        isNonAlc(b) && `<span class="tag na">Alcoholvrij</span>`,
+      ].filter(Boolean).join('');
+      pageOf[b.nr] = addPage('beer' + (isNonAlc(b) ? ' nonalc' : ''), `
+        <div class="scroll">
+          <h2>${esc(b.naam)}</h2>
+          ${tags ? `<div class="tags">${tags}</div>` : ''}
+          <p class="tekst">${esc(b.tekst)}</p>
+          <div class="stage">
+            <img src="${img(b)}" alt="${esc(b.naam)}" loading="lazy" decoding="async" />
+            <div class="nr">${b.nr}</div>
+            <div class="abv">${esc(b.abv)}<small>alc.</small></div>
+          </div>
+        </div>`, String(b.nr));
+    }
+
+    addPage('back', `<div class="art" style="background-image:url(img/klaverblad.webp)" role="img" aria-label="Bieren geleverd door Drankenhandel 't Klaverblad, Beerse"></div>`, 'klaverblad');
+
+    document.getElementById('toc').innerHTML = items.filter(b => b.type !== 'wijn').map(b =>
+      `<li><button data-go="${pageOf[b.nr]}"><span class="n ${isNonAlc(b) ? 'na' : ''}">${b.nr}</span><span>${esc(b.naam)}</span></button></li>`
+    ).join('') + `<li><button data-go="${pageOf.W1}"><span class="n">🍷</span><span>Wijnen</span></button></li>`;
+
+    // ---------- Navigation ----------
+    const pager = document.getElementById('pager');
+    const progress = document.getElementById('progress');
+    const prev = document.getElementById('prev');
+    const next = document.getElementById('next');
+    let current = 0;
+
+    function goTo(i, smooth = true) {
+      i = Math.max(0, Math.min(pages.length - 1, i));
+      const far = Math.abs(i - current) > 2;
+      book.scrollTo({ left: i * book.clientWidth, behavior: smooth && !far ? 'smooth' : 'instant' });
+      if (!smooth || far) onScroll();
+    }
+
+    function label(i) {
+      const k = pages[i].key;
+      if (k === 'cover') return 'Cover';
+      if (k === 'inhoud') return 'Inhoud';
+      if (k === 'wijn') return 'Wijn';
+      if (k === 'klaverblad') return 'Einde';
+      return `Nr. ${k} / ${items.filter(b => b.type !== 'wijn').length}`;
+    }
+
+    let ticking = false;
+    function onScroll() {
+      ticking = false;
+      const w = book.clientWidth, x = book.scrollLeft;
+      const idx = Math.round(x / w);
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // page-turn feel: neighbours tilt away around the spine
+      for (let i = Math.max(0, idx - 1); i <= Math.min(pages.length - 1, idx + 1); i++) {
+        const p = (i * w - x) / w; // -1 … 1
+        const sheet = pages[i].el.firstElementChild;
+        if (reduce) continue;
+        sheet.style.transformOrigin = p < 0 ? 'right center' : 'left center';
+        sheet.style.transform = `rotateY(${(-p * 28).toFixed(2)}deg) scale(${(1 - Math.abs(p) * 0.08).toFixed(3)})`;
+        sheet.style.setProperty('--shade', Math.min(1, Math.abs(p) * 1.6).toFixed(2));
+      }
+      if (idx !== current) {
+        // reset pages that left the window
+        pages.forEach((pg, i) => { if (Math.abs(i - idx) > 1) { pg.el.firstElementChild.style.transform = ''; pg.el.firstElementChild.style.setProperty('--shade', 0); } });
+        current = idx;
+        const k = pages[idx].key;
+        history.replaceState(null, '', k === 'cover' ? location.pathname : '#' + k);
+      }
+      pager.textContent = label(idx);
+      progress.style.width = (idx / (pages.length - 1) * 100) + '%';
+      prev.disabled = idx === 0;
+      next.disabled = idx === pages.length - 1;
+    }
+    book.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+    addEventListener('resize', () => goTo(current, false));
+    prev.onclick = () => goTo(current - 1);
+    next.onclick = () => goTo(current + 1);
+    book.addEventListener('click', e => { const t = e.target.closest('[data-go]'); if (t) goTo(+t.dataset.go); });
+
+    addEventListener('keydown', e => {
+      if (search.classList.contains('open')) { if (e.key === 'Escape') closeSearch(); return; }
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); goTo(current + 1); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); goTo(current - 1); }
+      else if (e.key === '/' || (e.key === 'k' && (e.metaKey || e.ctrlKey))) { e.preventDefault(); openSearch(); }
+    });
+
+    // ---------- Search ----------
+    const search = document.getElementById('search');
+    const q = document.getElementById('q');
+    const results = document.getElementById('results');
+    const chips = document.getElementById('chips');
+    const filters = new Set();
+    const index = items.map(b => ({ b, name: norm(b.naam), all: norm(`${b.nr} ${b.naam} ${b.abv || ''} ${b.tekst}`) }));
+
+    function highlight(text, terms) {
+      let out = esc(text);
+      for (const t of terms) {
+        if (!t) continue;
+        const n = norm(text); const i = n.indexOf(t);
+        if (i < 0) continue;
+        // map normalised position back to the original (same length after NFD strip for Latin text)
+        out = esc(text.slice(0, i)) + '<mark>' + esc(text.slice(i, i + t.length)) + '</mark>' + esc(text.slice(i + t.length));
+        break;
+      }
+      return out;
+    }
+
+    function render() {
+      const terms = norm(q.value.trim()).split(/\s+/).filter(Boolean);
+      const list = index.filter(({ b, all }) => {
+        if (filters.has('vat') && !b.vat) return false;
+        if (filters.has('nonalc') && !isNonAlc(b)) return false;
+        if (filters.has('trappist') && !b.trappist) return false;
+        if (filters.has('sterk') && !(abvNum(b) >= 8)) return false;
+        if (filters.has('wijn') && b.type !== 'wijn') return false;
+        return terms.every(t => all.includes(t) || (t.length > 5 && all.includes(t.slice(0, -2))));
+      }).map(r => {
+        // rank: exact number > name starts with > name contains > description only
+        const t = terms.join(' ');
+        let score = 3;
+        if (t && String(r.b.nr).toLowerCase() === t) score = 0;
+        else if (t && r.name.startsWith(t)) score = 1;
+        else if (terms.every(x => r.name.includes(x))) score = 2;
+        return { ...r, score };
+      }).sort((a, z) => a.score - z.score);
+
+      if (!list.length) { results.innerHTML = `<li class="empty">Geen bier gevonden voor “${esc(q.value)}”.</li>`; return; }
+      results.innerHTML = list.map(({ b, score }) => {
+        const thumb = b.type === 'wijn' ? `<span class="ph">🍷</span>` : `<img src="${img(b)}" alt="" loading="lazy" />`;
+        const meta = [b.type === 'wijn' ? 'Wijn' : 'Nr. ' + b.nr, b.vat && "van 't vat", isNonAlc(b) && 'alcoholvrij', b.trappist && 'trappist', terms.length && score === 3 && 'gevonden in beschrijving'].filter(Boolean).join(' · ');
+        return `<li><button data-go="${pageOf[b.nr]}">${thumb}<span><strong>${highlight(b.naam, terms)}</strong><span class="meta">${meta}</span></span><span class="pct">${esc(b.abv || '')}</span></button></li>`;
+      }).join('');
+    }
+
+    function openSearch() { search.classList.add('open'); render(); setTimeout(() => q.focus(), 50); }
+    function closeSearch() { search.classList.remove('open'); q.blur(); }
+    document.getElementById('openSearch').onclick = openSearch;
+    document.getElementById('closeSearch').onclick = closeSearch;
+    search.addEventListener('click', e => {
+      if (e.target === search) return closeSearch();
+      const t = e.target.closest('[data-go]');
+      if (t) { closeSearch(); goTo(+t.dataset.go, false); }
+    });
+    q.addEventListener('input', render);
+    q.addEventListener('keydown', e => { if (e.key === 'Enter') { const first = results.querySelector('[data-go]'); if (first) first.click(); } });
+    chips.addEventListener('click', e => {
+      const c = e.target.closest('.chip'); if (!c) return;
+      const on = c.getAttribute('aria-pressed') !== 'true';
+      c.setAttribute('aria-pressed', on);
+      on ? filters.add(c.dataset.f) : filters.delete(c.dataset.f);
+      render();
+    });
+
+    // ---------- Deep link (#12 opens beer 12, handy for a QR code per table) ----------
+    function fromHash() {
+      const key = decodeURIComponent(location.hash.slice(1)).toLowerCase();
+      const i = pages.findIndex(p => p.key.toLowerCase() === key);
+      if (i > 0) goTo(i, false); else onScroll();
+    }
+    addEventListener('hashchange', fromHash);
+    requestAnimationFrame(fromHash);
+  </script>
+</body>
+</html>
