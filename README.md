@@ -34,12 +34,6 @@ Local URL: `http://localhost:4321/`
 - The deploy workflow builds it into `dist/wie-van-ons/`, so it is served at `https://bentj.be/wie-van-ons/`.
 - Setup steps are in `wie-van-ons/README.md`.
 
-## Bieravond
-
-- `public/bieravond/` is a static digital beer booklet for the Scouts Vosselaar beer night, served at `https://bentj.be/bieravond/`.
-- Beer data lives in `public/bieravond/bieren.js`; bottle photos in `public/bieravond/img/bieren/<nr>.webp`.
-- Deep links like `/bieravond/#12` open a specific beer.
-
 ## Notes
 
 - Click the bike icon in the footer for the hidden Strava card.
