@@ -28,11 +28,11 @@ Local URL: `http://localhost:4321/`
 - Enable GitHub Pages with GitHub Actions as the source.
 - Push to `main` to deploy through `.github/workflows/deploy.yml`.
 
-## Bieravond
+## Wie van ons?
 
-- `public/bieravond/` is a static digital beer booklet for the Scouts Vosselaar beer night, served at `https://bentj.be/bieravond/`.
-- Beer data lives in `public/bieravond/bieren.js`; bottle photos in `public/bieravond/img/bieren/<nr>.webp`.
-- Deep links like `/bieravond/#12` open a specific beer.
+- `wie-van-ons/` holds a separate Vite app (scouts drinking game) with a Supabase backend.
+- The deploy workflow builds it into `dist/wie-van-ons/`, so it is served at `https://bentj.be/wie-van-ons/`.
+- Setup steps are in `wie-van-ons/README.md`.
 
 ## Notes
 
