@@ -1,7 +1,0 @@
-# Enkel de instellingen die dit project nodig heeft. `supabase link` vult de rest aan.
-project_id = "wie-van-ons"
-
-[functions.upload_avatar]
-# Het speler-token wordt in de functie zelf gevalideerd; zo werkt de upload ook met
-# de nieuwe publishable keys (die geen JWT zijn).
-verify_jwt = false
