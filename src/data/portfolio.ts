@@ -90,7 +90,7 @@ export const site = {
   name: 'Bent Jacobs',
   title: 'Bent Jacobs - Software Developer',
   description:
-    'Bent Jacobs - Software Developer specialising in Salesforce (Apex, LWC, Agentforce), full-stack engineering and AI-assisted development. Based in Brussels, BE from September 2026.',
+    'Bent Jacobs - Software Developer specialising in Salesforce (Apex, LWC, Agentforce), full-stack engineering and AI-assisted development. Currently Salesforce Developer at Duvel Moortgat. Based in Brussels, BE.',
   // Used for Open Graph / canonical. Combined with `base` at render time.
   url: 'https://bentj.be',
   ogImage: 'images/og-image.svg',
@@ -191,9 +191,19 @@ export const skills: SkillGroup[] = [
 export const experience: ExperienceItem[] = [
   {
     role: 'Salesforce Developer',
+    company: 'Duvel Moortgat',
+    location: 'Breendonk',
+    period: 'Sep 2026 – present',
+    highlights: [
+      'Develop and maintain Salesforce solutions with Apex, LWC and Flow for one of Belgium’s best-known breweries.',
+      'Work closely with the business to turn requirements into reliable features on the platform.',
+    ],
+  },
+  {
+    role: 'Salesforce Developer',
     company: 'Ittes',
     location: 'Turnhout',
-    period: 'Apr 2025 – present',
+    period: 'Apr 2025 – Aug 2026',
     highlights: [
       'Build custom Salesforce solutions with Apex, LWC, Flow and Visualforce, from requirements to deployment.',
       'Connect Salesforce with systems such as Odoo and Business Central through REST APIs and n8n.',
@@ -367,8 +377,8 @@ export const education: EducationItem[] = [
 export const contact = {
   heading: 'Let’s talk',
   intro:
-    'Open to software, Salesforce and AI developer roles. The fastest way to reach me is email - I’m happy to chat.',
-  location: 'Brussels, BE - from September 2026',
+    'Currently a Salesforce Developer at Duvel Moortgat. Want to talk Salesforce, AI or a side project? The fastest way to reach me is email - I’m happy to chat.',
+  location: 'Brussels, BE',
   links: [
     {
       label: 'Email',
@@ -392,7 +402,7 @@ export const contact = {
     },
     {
       label: 'Location',
-      value: 'Brussels, BE - from September 2026',
+      value: 'Brussels, BE',
       href: 'https://www.openstreetmap.org/search?query=Brussels',
       icon: 'pin',
       external: true,
